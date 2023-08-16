@@ -1,8 +1,6 @@
-import { X509Certificate } from "crypto";
-import { getNonce } from "./login";
-import { Nonce } from "./nonce";
-import { json } from "stream/consumers";
-import { JwtUtils } from "../jwt";
+// import { X509Certificate } from "crypto";
+import { KretaAPI } from "./api";
+import { Nonce, getNonce } from "./nonce";
 
 export class KretaClient {
     accessToken?: string;
@@ -10,11 +8,11 @@ export class KretaClient {
     idToken?: string;
     userAgent?: string;
 
-    _checkCerts(cert: X509Certificate, host: string, port: number): boolean {
-        return false;
-    }
+    // _checkCerts(cert: X509Certificate, host: string, port: number): boolean {
+    //     return false;
+    // }
 
-    async getAPI(url: string, { autoHeader = true, json = true, rawResponse = false }, headers: Record<string, string> = {}): Promise<any> {
+    async getAPI(url: string, headers: Record<string, string> = {}, { autoHeader = true, json = true, rawResponse = false }): Promise<any> {
         if (rawResponse) json = false;
     
         try {
@@ -59,7 +57,7 @@ export class KretaClient {
         }
     }
 
-    async postAPI(url: string, body: Record<any, any>, { autoHeader = true, json = true }, headers: Record<string, string> = {}): Promise<any> {    
+    async postAPI(url: string, body: Record<any, any>, headers: Record<string, string> = {}, { autoHeader = true, json = true }): Promise<any> {    
         try {
             let res: Response | undefined;
     
@@ -101,21 +99,21 @@ export class KretaClient {
     }
 
     async refreshLogin() {
-        if ('majd_lesz_user_check' == null) return;
+        // if ('majd_lesz_user_check' == null) return;
 
-        var headers = new Map<string, string>([
+        const headers = new Map<string, string>([
             ['content-type', 'application/x-www-form-urlencoded'],
         ]);
 
-        var nonceString: string = await this.getAPI(KretaAPI.nonce, {json: false});
-        var nonce: Nonce = getNonce(nonceString, '72687219753', 'bgeszc-ganz');
+        const nonceString: string = await this.getAPI(KretaAPI.nonce, {}, {json: false});
+        const nonce: Nonce = getNonce(nonceString, '72687219753', 'bgeszc-ganz');
 
-        var nonceHeaders: Map<string, string> = nonce.header()
+        const nonceHeaders: Map<string, string> = nonce.header()
         nonceHeaders.forEach((value, key) => {
             headers.set(key, value);
         });
 
-        var loginBody: Record<any, any> = {
+        const loginBody: Record<any, any> = {
             'userName': '72687219753',
             'password': '2007-09-05',
             'institute_code': 'bgeszc-ganz',
@@ -124,7 +122,7 @@ export class KretaClient {
         };
 
         // console.log(`DEBUG: refreshLogin: ${loginUser.id} ${loginUser.name}`);
-        var loginRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers));
+        const loginRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
 
         if (loginRes) {
             if (loginRes.has("access_token")) this.accessToken = loginRes.get("access_token");
@@ -136,7 +134,7 @@ export class KretaClient {
         }
 
         if (this.refreshToken) {
-            var refreshBody: Record<any, any> = {
+            const refreshBody: Record<any, any> = {
                 'refresh_token': this.refreshToken,
                 'institute_code': 'bgeszc-ganz',
                 'client_id': KretaAPI.clientId,
@@ -144,7 +142,7 @@ export class KretaClient {
                 'refresh_user_data': 'false'
             };
 
-            var refreshRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, refreshBody, Object.fromEntries(headers));
+            const refreshRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, refreshBody, Object.fromEntries(headers), {});
             if (refreshRes != null) {
                 if (refreshRes.has("id_token")) this.idToken = refreshRes.get("id_token");
             }
@@ -152,8 +150,8 @@ export class KretaClient {
     }
 
     private sleep(milliseconds: number) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
+        const start = new Date().getTime();
+        for (let i = 0; i < 1e7; i++) {
             if ((new Date().getTime() - start) > milliseconds){
                 break;
             }

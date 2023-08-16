@@ -1,16 +1,10 @@
-'use client'
-
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation'
+import { Link, useLocation } from 'react-router-dom';
 import * as Icon from 'react-feather';
+import fullLogo from '/image/brand/full_logo.svg?url';
 
-function profileClick() {
+const NavBar = () => {
+    const location = useLocation();
 
-}
-
-export default function Navigation() {
-    const path = usePathname()
     const navLinks: { href: string; name: string; }[] = [
         {
             href: '/app/home',
@@ -34,17 +28,21 @@ export default function Navigation() {
         },
     ];
 
+    function profileClick(): void {
+        throw new Error('Function not implemented.');
+    }
+
     return (
-        <div className='flex flex-row p-5 items-center justify-between w-full h-max text-white fixed gap-5 bg-black'>
+        <div className='flex flex-row p-5 items-center justify-between w-full h-max text-white fixed gap-5 bg-black z-50'>
             <div className='flex flex-row items-center justify-start w-max h-max flex-1 pl-1'>
-                <Image alt='logo' src='/image/brand/full_logo.svg' width={130} height={44}/>
+                <img src={fullLogo} alt="alt" width={130} height={44}/>
             </div>
-            <div className='flex flex-row items-center justify-center w-max h-max flex-1'>
+            <div className='flex flex-row items-center justify-center w-max h-max flex-1 gap-2'>
                 {navLinks.map((link) => {
-                    const isActive = path == link.href;
+                    const isActive = location.pathname == link.href;
             
                     return (
-                        <Link href={link.href} key={link.name}>
+                        <Link to={link.href} key={link.name}>
                             <div className={(isActive ? 'bg-refilc-sec bg-opacity-40' : 'bg-transparent') + ' rounded-xl p-3 text-refilc-sec'}>
                                 {link.name.toLowerCase() == 'home' ? <Icon.Home className={/*(isActive ? 'fill-current' : '') + */' w-[20px] h-[20px]'} /> :
                                     link.name.toLowerCase() == 'grades' ? <Icon.Bookmark className={/*(isActive ? 'fill-current' : '') + */' w-[20px] h-[20px]'} /> :
@@ -60,7 +58,7 @@ export default function Navigation() {
             </div>
             <div className='flex flex-row items-center justify-end w-max h-max gap-5 flex-1 pr-1'>
                 <p className='font-bold'>Szép napot, János!</p>
-                <div onClick={profileClick}>
+                <div onClick={profileClick} className='cursor-pointer'>
                     <div className='rounded-full bg-refilc w-[44px] h-[44px] flex items-center justify-center'>
                         <p className='text-sm'>J</p>
                     </div>
@@ -69,3 +67,5 @@ export default function Navigation() {
         </div>
     );
 }
+
+export default NavBar;

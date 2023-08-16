@@ -1,22 +1,19 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+// import NavBar from './components/Navigation';
+import { useParams } from 'react-router-dom';
+import AppHome from './pages/home';
 
-const mainFont = Montserrat({ subsets: ['latin'] })
+const AppLayout = () => {
+    const params = useParams();
+    const currentPage = params.page;
 
-export const metadata: Metadata = {
-  title: 'reFilc',
-  description: 'reFilc website',
+    return (
+        <div className='select-none'>
+            {/* <NavBar /> */}
+            {
+                currentPage == 'home' ? <AppHome /> : ''
+            }
+        </div>
+    )
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="en">
-      <body className={mainFont.className}>{children}</body>
-    </html>
-  )
-}
+export default AppLayout;

@@ -1,5 +1,4 @@
 import { BinaryLike, Hmac, createHmac } from "crypto";
-import utf8 from "utf8";
 
 export class Nonce {
     nonce: string;
@@ -25,4 +24,11 @@ export class Nonce {
             ['X-Authorizationpolicy-Version', 'v2'],
         ]);
     }
+}
+
+export function getNonce(nonce: string, username: string, instituteCode: string) {
+    const nonceEncoder = new Nonce(nonce, String.fromCharCode(98, 97, 83, 115, 120, 79, 119, 108, 85, 49, 106, 77));
+    nonceEncoder.encode(instituteCode.toUpperCase() + nonce + username.toUpperCase());
+
+    return nonceEncoder;
 }

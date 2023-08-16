@@ -1,8 +1,6 @@
-import utf8 from "utf8";
-
 export class JwtUtils {
     static decodeJwt(jwt: string) {
-        var parts = jwt.split(".");
+        const parts = jwt.split(".");
         if (parts.length != 3) return null;
     
         if (parts[1].length % 4 == 2) {
@@ -20,13 +18,15 @@ export class JwtUtils {
         return null;
     }
   
-    static getNameFromJWT(jwt: string) {
-        var jwtData = this.decodeJwt(jwt);
-        // return jwtData["name"];
-    }
+    // static getNameFromJWT(jwt: string) {
+    //     const jwtData = this.decodeJwt(jwt);
+
+    //     // return jwtData["name"];
+    // }
   
     static getRoleFromJWT(jwt: string) {
-        var jwtData = this.decodeJwt(jwt);
+        jwt;
+        // const jwtData = this.decodeJwt(jwt);
     
         // switch (jwtData["role"]) {
         //     case "Tanulo":

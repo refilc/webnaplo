@@ -23,6 +23,7 @@ class KretaApiEndpoints {
     // static homeworkDone = "/ellenorzo/V3/Sajat/HaziFeladatok/Megoldva"; // Removed from the API
     static capabilities = "/ellenorzo/V3/Sajat/Intezmenyek";
     static downloadHomeworkAttachments(uid: string, type: string) {
+        type;
         return `/ellenorzo/V3/Sajat/Csatolmany/${uid}`;
     }
 }
@@ -46,7 +47,7 @@ class KretaAdminEndpoints {
     static deleteMessage = "/api/v1/kommunikacio/postaladaelemek/torles";
   }
 
-class KretaAPI {
+export class KretaAPI {
     // IDP API
     static login = BaseKreta.kretaIdp + KretaApiEndpoints.token;
     static nonce = BaseKreta.kretaIdp + KretaApiEndpoints.nonce;
