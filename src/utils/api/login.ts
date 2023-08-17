@@ -1,12 +1,12 @@
 import { KretaAPI } from "../webkreten/api";
 import { UserDB } from "../db/users";
-import { randomUUID } from "crypto";
 import { KretaClient } from "../webkreten/client";
 import { Config } from "../../models/config";
 import { Nonce, getNonce } from "../webkreten/nonce";
 import { LoginUser } from "../../models/user";
 import { Settings } from "../settings";
 import { JwtUtils } from "../jwt";
+import { v4 } from "uuid";
 
 export async function loginAPI(username: string, password: string, instituteCode: string, onLogin?: Function, onSuccess?: Function) {
     const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
@@ -26,29 +26,30 @@ export async function loginAPI(username: string, password: string, instituteCode
         headers.set(key, value);
     });
 
-    const loginBody: Record<any, any> = {
-        'userName': username,
-        'password': password,
-        'institute_code': instituteCode,
-        'grant_type': 'password',
-        'client_id': KretaAPI.clientId,
-    };
+    // const loginBody: Record<any, any> = {
+    //     'userName': username,
+    //     'password': password,
+    //     'institute_code': instituteCode,
+    //     'grant_type': 'password',
+    //     'client_id': KretaAPI.clientId,
+    // };
+    const loginBody: string = `userName=${username}&password=${password}&institute_code=${instituteCode}&client_id=${KretaAPI.clientId}&grant_type=password`;
 
-    const res: Map<string, any> = await kretaClient.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
+    const res = await kretaClient.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
 
     if (res != null) {
-        if (res.has("error")) {
-            if (res.get("error") == "invalid_grant") {
+        if (res["error"]) {
+            if (res["error"] == "invalid_grant") {
                 return LoginState.invalidGrant;
             }
         } else {
-            if (res.has("access_token")) {
+            if (res["access_token"]) {
                 try {
-                    kretaClient.accessToken = res.get("access_token");
-                    const studentJson: Map<string, any> = await kretaClient.getAPI(KretaAPI.student(instituteCode), {}, {});
+                    kretaClient.accessToken = res["access_token"];
+                    const studentJson = await kretaClient.getAPI(KretaAPI.student(instituteCode), {}, {});
 
-                    const userID = randomUUID();
-                    const user = new LoginUser(userID, username, password, instituteCode, studentJson.get('name'), 'will-be', JwtUtils.getRoleFromJWT(res.get("access_token"))!, '', '');
+                    const userID = v4();
+                    const user = new LoginUser(userID, username, password, instituteCode, studentJson['name'], 'will-be', JwtUtils.getRoleFromJWT(res["access_token"])!, '', '');
             
                     if (onLogin != null) onLogin(user);
             

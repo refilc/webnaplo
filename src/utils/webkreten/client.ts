@@ -24,7 +24,7 @@ export class KretaClient {
                     if (!headers['user-agent'] && this.userAgent) headers['user-agent'] = this.userAgent;
                 }
             
-                res = await fetch(url, {
+                res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
                     method: 'GET',
                     headers: headers,
                 });
@@ -57,7 +57,7 @@ export class KretaClient {
         }
     }
 
-    async postAPI(url: string, body: Record<any, any>, headers: Record<string, string> = {}, { autoHeader = true, json = true }): Promise<any> {    
+    async postAPI(url: string, body: string, headers: Record<string, string> = {}, { autoHeader = true, json = true }): Promise<any> {    
         try {
             let res: Response | undefined;
     
@@ -68,10 +68,10 @@ export class KretaClient {
                     if (!headers['content-type']) headers['content-type'] = 'application/json';
                 }
             
-                res = await fetch(url, {
+                res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
                     method: 'POST',
                     headers: headers,
-                    body: JSON.stringify(body),
+                    body: body,
                 });
         
                 if (res.status == 401) {
@@ -113,13 +113,14 @@ export class KretaClient {
             headers.set(key, value);
         });
 
-        const loginBody: Record<any, any> = {
-            'userName': '72687219753',
-            'password': '2007-09-05',
-            'institute_code': 'bgeszc-ganz',
-            'grant_type': 'password',
-            'client_id': KretaAPI.clientId,
-        };
+        // const loginBody: Record<any, any> = {
+        //     'userName': '72687219753',
+        //     'password': '2007-09-05',
+        //     'institute_code': 'bgeszc-ganz',
+        //     'grant_type': 'password',
+        //     'client_id': KretaAPI.clientId,
+        // };
+        const loginBody: string = `userName=72687219753&password=2007-09-05&institute_code=bgeszc-ganz&client_id${KretaAPI.clientId}&grant_type=password`;
 
         // console.log(`DEBUG: refreshLogin: ${loginUser.id} ${loginUser.name}`);
         const loginRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
@@ -134,13 +135,7 @@ export class KretaClient {
         }
 
         if (this.refreshToken) {
-            const refreshBody: Record<any, any> = {
-                'refresh_token': this.refreshToken,
-                'institute_code': 'bgeszc-ganz',
-                'client_id': KretaAPI.clientId,
-                'grant_type': 'refresh_token',
-                'refresh_user_data': 'false'
-            };
+            const refreshBody: string = `refresh_token=${this.refreshToken}&institute_code=bgeszc-ganz&client_id=${KretaAPI.clientId}&grant_type=refresh_token&refresh_user_data=${false}`;
 
             const refreshRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, refreshBody, Object.fromEntries(headers), {});
             if (refreshRes != null) {

@@ -10,7 +10,7 @@ export class Config {
   
     public static fromJson(json: Map<any, any>): Config {
         return new Config(
-            json.get("user_agent") ?? "hu.refilc.naplo/$0/$1/$2",
+            json ? json.get("user_agent") : "hu.refilc.naplo/$0/$1/$2",
             json
         );
     }

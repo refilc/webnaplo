@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { v4 } from "uuid";
 
 export class Settings {
     static get(key: string): string {
@@ -45,7 +45,7 @@ export class UserSettings {
 
 export class DefaultSettings {
     static get xFilcID() {
-        return randomUUID();
+        return v4();
     }
     static currentUser = null;
 }
