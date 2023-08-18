@@ -51,10 +51,10 @@ export async function loginAPI(username: string, password: string, instituteCode
                     const userID = v4();
                     const user = new LoginUser(userID, username, password, instituteCode, studentJson['name'], 'will-be', JwtUtils.getRoleFromJWT(res["access_token"])!, '', '');
             
-                    if (onLogin != null) onLogin(user);
+                    if (onLogin != null) await onLogin(user);
             
                     // Store User in the database
-                    await UserDB.addUser(user);
+                    UserDB.addUser(user);
                     Settings.set('currentUser', userID);
 
                     // Get user data
@@ -71,14 +71,14 @@ export async function loginAPI(username: string, password: string, instituteCode
                         //     Provider.of<AbsenceProvider>(context, listen: false).fetch(),
                         // ]);
                     } catch (error) {
-                        console.log(`WARNING: Failed to fetch user data: ${error}`);
+                        console.warn(`[reFilc-API]: Failed to fetch user data: ${error}`);
                     }
             
-                    if (onSuccess != null) onSuccess();
+                    if (onSuccess != null) await onSuccess();
             
                     return LoginState.success;
                 } catch (error) {
-                    console.log(`ERROR: loginApi: ${error}`);
+                    console.error(`[reFilc-Auth]: loginApi: ${error}`);
                     // maybe check debug mode
                     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ERROR: $error")));
                     return LoginState.failed;

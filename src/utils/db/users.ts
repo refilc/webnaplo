@@ -1,64 +1,38 @@
 import { LoginUser } from '../../models/user';
-import * as Database from './db';
+import { Database } from './db';
 
 export class UserDB {
-    static details = {
-        id: '',
-        username: '',
-        password: '',
-        instituteCode: '',
-        name: '',
-        studentId: '',
-        role: '',
-        nickname: '',
-        picture: '',
-    }
-
-    static addUser = async (user: LoginUser) => {
+    static addUser = (user: LoginUser) => {
         const { id, username, password, instituteCode, name, studentId, role, nickname, picture } = user;
-        const db = await Database.get();
-
         const addData = {
-            id,
-            username,
-            password,
-            instituteCode,
-            name,
-            studentId,
-            role,
-            nickname,
-            picture,
+            '_id': id,
+            'username': username,
+            'password': password,
+            'instituteCode': instituteCode,
+            'name': name,
+            'studentId': studentId,
+            'role': role,
+            'nickname': nickname,
+            'picture': picture,
         };
 
-        await db.users.insert(addData);
+        Database.store('user', addData);
     }
 
-    static deleteUser = async () => {
-        const { id } = this.details;
-        const db = await Database.get();
-
-        const query = db.users.find({
-            selector: {
-                id: id,
-            }
-        });
-
-        await query.remove();
+    static deleteUser = (id: string) => {
+        Database.remove('user', id);
     }
 
-    static listUsers = async () => {
-        const db = await Database.get();
+    static getUser = async (id: string): Promise<LoginUser | null> => {
+        const res = await Database.read('user', id);
+        console.log(res);
+        if (!res) return null;
+        const user = new LoginUser(res['_id'], res['username'], res['password'], res['instituteCode'], res['name'], res['studentId'], res['role'], res['nickname'], res['picture']);
+        return user;
+    }
 
-        const query = db.users.find({
-            selector: {},
-            sort: [
-                { username: 'asc' },
-            ],
-        });
-
-        query.$.subscribe((users: any) => {
-            if (!users) return null;
-            return users as NodeList;
-        });
+    static listUsers = async (): Promise<any> => {
+        const res = await Database.readAll('user');
+        return res;
     }
 }

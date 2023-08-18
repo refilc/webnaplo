@@ -50,9 +50,9 @@ export class KretaClient {
             }
         } catch (error) {
             if (error instanceof SyntaxError) {
-                console.log(`ERROR: KretaClient.getAPI (${url}) SyntaxError: ${error.message}`);
+                console.error(`[reFilc-API]: KretaClient.getAPI (${url}) SyntaxError: ${error.message}`);
             } else {
-                console.log(`ERROR: KretaClient.getAPI (${url}) UnknownException: ${error}`);
+                console.error(`[reFilc-API]: KretaClient.getAPI (${url}) UnknownException: ${error}`);
             }
         }
     }
@@ -91,9 +91,9 @@ export class KretaClient {
             }
         } catch (error) {
             if (error instanceof SyntaxError) {
-                console.log(`ERROR: KretaClient.getAPI (${url}) SyntaxError: ${error.message}`);
+                console.error(`[reFilc-API]: KretaClient.getAPI (${url}) SyntaxError: ${error.message}`);
             } else {
-                console.log(`ERROR: KretaClient.getAPI (${url}) UnknownException: ${error}`);
+                console.error(`[reFilc-API]: KretaClient.getAPI (${url}) UnknownException: ${error}`);
             }
         }
     }

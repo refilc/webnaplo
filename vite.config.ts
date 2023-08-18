@@ -21,4 +21,7 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
+  server: {
+    host: '127.0.0.1',
+  }
 })

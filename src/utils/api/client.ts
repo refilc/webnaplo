@@ -30,7 +30,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.log(`ERROR: FilcAPI.getSchools: ${error}`);
+            console.error(`[reFilc-API]: FilcAPI.getSchools: ${error}`);
         }
         return null;
     }
@@ -61,7 +61,7 @@ export class reFilcAPI {
             }
             throw `HTTP ${res.status}: ${res.body}`;
         } catch (error) {
-            console.log(`ERROR: FilcAPI.getConfig: ${error}`);
+            console.error(`[reFilc-API]: FilcAPI.getConfig: ${error}`);
         }
         return null;
     }
@@ -76,7 +76,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.log(`ERROR: FilcAPI.getNews: ${error}`);
+            console.error(`[reFilc-API]: FilcAPI.getNews: ${error}`);
         }
         return null;
     }
@@ -90,9 +90,9 @@ export class reFilcAPI {
             } else {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
-            } catch (error) {
-                console.log(`ERROR: FilcAPI.getSupporters: ${error}`);
-            }
+        } catch (error) {
+            console.error(`[reFilc-API]: FilcAPI.getSupporters: ${error}`);
+        }
         return null;
     }
 
@@ -105,9 +105,9 @@ export class reFilcAPI {
             } else {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
-            } catch (error) {
-                console.log(`ERROR: FilcAPI.getReleases: ${error}`);
-            }
+        } catch (error) {
+            console.error(`[reFilc-API]: FilcAPI.getReleases: ${error}`);
+        }
         return null;
     }
 
@@ -128,7 +128,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.log(`ERROR: FilcAPI.sendReport: ${error}`);
+            console.error(`[reFilc-API]: FilcAPI.sendReport: ${error}`);
         }
     }
 }

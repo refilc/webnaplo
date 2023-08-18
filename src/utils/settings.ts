@@ -22,6 +22,9 @@ export class Settings {
         const s: Record<string, any> = this.parseFromString(window.localStorage.getItem('settings') ?? '{}');
         s[key] = value;
 
+        const stringS = this.parseToString(s);
+        window.localStorage.setItem('settings', stringS);
+
         return s[key];
     }
 

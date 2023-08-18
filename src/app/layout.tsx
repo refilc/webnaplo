@@ -1,4 +1,4 @@
-// import NavBar from './components/Navigation';
+import NavBar from './components/navbar';
 import { useParams } from 'react-router-dom';
 import AppHome from './pages/home';
 
@@ -8,7 +8,7 @@ const AppLayout = () => {
 
     return (
         <div className='select-none'>
-            {/* <NavBar /> */}
+            <NavBar />
             {
                 currentPage == 'home' ? <AppHome /> : ''
             }
