@@ -7,7 +7,7 @@ const AppLayout = () => {
     const currentPage = params.page;
 
     return (
-        <div className='select-none'>
+        <div className='select-none flex flex-col items-center'>
             <NavBar />
             {
                 currentPage == 'home' ? <AppHome /> : ''

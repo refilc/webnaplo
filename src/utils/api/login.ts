@@ -3,15 +3,20 @@ import { UserDB } from "../db/users";
 import { KretaClient } from "../webkreten/client";
 import { Config } from "../../models/config";
 import { Nonce, getNonce } from "../webkreten/nonce";
-import { LoginUser, UserStudent } from "../../models/user";
+import { LoginUser, Student } from "../../models/user";
 import { Settings } from "../settings";
 import { JwtUtils } from "../jwt";
 import { v4 } from "uuid";
+import { GradeProvider } from "../webkreten/providers/grades";
 
-export async function loginAPI(username: string, password: string, instituteCode: string, corsProxy: string, onLogin?: Function, onSuccess?: Function) {
+export async function loginAPI(username: string, password: string, instituteCode: string, corsProxy: string, onLogin?: Function, onSuccess?: Function): Promise<LoginState> {
     const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
 
     Settings.set('corsProxy', corsProxy);
+
+    if (username.replace(' ', '') == '') return LoginState.missingFields;
+    if (password.replace(' ', '') == '') return LoginState.missingFields;
+    if (instituteCode.replace(' ', '') == '') return LoginState.missingFields;
 
     const kretaClient = new KretaClient();
     kretaClient.userAgent = config.userAgent();
@@ -49,7 +54,7 @@ export async function loginAPI(username: string, password: string, instituteCode
                 try {
                     kretaClient.accessToken = res["access_token"];
                     const studentJson = await kretaClient.getAPI(KretaAPI.student(instituteCode), {}, {});
-                    const student = UserStudent.fromKretaJSON(studentJson);
+                    const student = Student.fromKretaJSON(studentJson);
 
                     const userID = v4();
                     const user = new LoginUser(
@@ -73,7 +78,8 @@ export async function loginAPI(username: string, password: string, instituteCode
 
                     // Get user data
                     try {
-                        // fetch everythin cute from api, i'll do that later
+                        // fetch everythin cute from api
+                        await GradeProvider.fetch();
                         // await Future.wait([
                         //     Provider.of<GradeProvider>(context, listen: false).fetch(),
                         //     Provider.of<TimetableProvider>(context, listen: false).fetch(week: Week.current()),
@@ -100,9 +106,10 @@ export async function loginAPI(username: string, password: string, instituteCode
             }
         }
     }
+    return LoginState.inProgress;
 }
 
-enum LoginState {
+export enum LoginState {
     missingFields,
     invalidGrant,
     failed,

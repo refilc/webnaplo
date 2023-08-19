@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LoginUser } from "../../models/user";
-import { loginAPI } from "../../utils/api/login";
+import { LoginState, loginAPI } from "../../utils/api/login";
 import { useNavigate } from "react-router-dom";
 
 const AuthLogin = () => {
@@ -11,9 +11,12 @@ const AuthLogin = () => {
 
     const navigate = useNavigate();
 
-    const loginSuccess = async (user: LoginUser) => {
+    const onLogin = async (user: LoginUser) => {
         console.log(`[reFilc-Auth]: Successfully logged in user "${user.username}"!`);
-        // alert(`Üdv ${user.name}!`)
+        // alert(`Üdv ${user.name}!`);
+    }
+
+    const onSuccess = async () => {
         navigate('/app/home');
     }
 
@@ -31,7 +34,10 @@ const AuthLogin = () => {
                 );
         }
 
-        await loginAPI(username, password, instituteCode, proxyUrl, loginSuccess);
+        const res: LoginState = await loginAPI(username, password, instituteCode, proxyUrl, onLogin, onSuccess);
+        if (res == LoginState.missingFields) alert('Adj meg minden adatot a belépéshez!');
+        if (res == LoginState.failed) alert('Ismeretlen hiba történt!');
+        if (res == LoginState.invalidGrant) alert('Hibás felhasználónév vagy jelszó!');
         // console.log(`[reFilc-Auth]: ${response?.toString()}`);
     }
 

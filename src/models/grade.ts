@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Category } from "./category";
 import { Subject } from "./subject";
 
@@ -52,7 +53,7 @@ export class Grade {
     static fromKretaJSON(json: any): Grade {
         return new Grade(
             json,
-            json['Uid'] ?? '',
+            `${json['Uid']}` ?? v4(),
             new Date(json['KeszitesDatuma'] ?? null),
             new GradeValue(
                 json['SzamErtek'] ?? 0,
@@ -61,7 +62,7 @@ export class Grade {
                 json['SulySzazalekErteke'] ?? 0,
             ),
             json['ErtekeloTanarNeve'] ?? '',
-            json['Tema'] ?? '',
+            json['Tema'].replace(/^./, json['Tema'].charAt(0).toUpperCase()) ?? '',
             json['Tipus']['Nev'] ?? '',
             json['OsztalyCsoport']['Uid'] ?? '',
             Subject.fromKretaJSON(json['Tantargy'] ?? {}),
@@ -71,6 +72,50 @@ export class Grade {
             new Date(json['LattamozasDatuma'] ?? null),
             (json['Jelleg'] ?? 'Na') != 'Na' ? json["Jelleg"] : '',
         );
+    }
+
+    static fromJSON(json: any): Grade {
+        const value = new GradeValue(
+            json['value']['numValue'],
+            json['value']['textValue'],
+            json['value']['shortTextValue'],
+            json['value']['percentage'],
+        );
+        const subject = new Subject(
+            json['subject']['id'],
+            json['subject']['category'],
+            json['subject']['name'],
+            json['subject']['renamedTo'],
+        );
+        const gradeType = new Category(
+            json['gradeType']['id'],
+            json['gradeType']['description'],
+            json['gradeType']['name'],
+        );
+        const mode = new Category(
+            json['mode']['id'],
+            json['mode']['description'],
+            json['mode']['name'],
+        );
+        
+        const grade = new Grade(
+            json['json'],
+            json['_id'],
+            new Date(json['date']),
+            value,
+            json['teacher'],
+            json['description'],
+            json['type'],
+            json['groupId'],
+            subject,
+            gradeType,
+            mode,
+            new Date(json['writeDate']),
+            new Date(json['seenDate']),
+            json['form'],
+        );
+        
+        return grade;
     }
 }
 

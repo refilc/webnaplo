@@ -1,4 +1,4 @@
-import { LoginUser, UserStudent } from '../../models/user';
+import { LoginUser } from '../../models/user';
 import { Database } from './db';
 import { Grade } from '../../models/grade';
 
@@ -48,42 +48,17 @@ export class GradeDB {
         Database.remove('grade', id);
     }
 
-    static getGrade = async (id: string): Promise<LoginUser | null> => {
+    static getGrade = async (id: string): Promise<Grade | null> => {
         const res = await Database.read('grade', id);
         if (!res) return null;
 
-        const student = new UserStudent(
-            res['student']['json'],
-            res['student']['id'],
-            res['student']['name'],
-            res['student']['school'],
-            res['student']['birth'],
-            res['student']['yearId'],
-            res['student']['address'],
-            res['student']['groupId'],
-            res['student']['parents'],
-            res['student']['className']
-        );
-        const user = new LoginUser(
-            res['_id'],
-            res['username'],
-            res['password'],
-            res['instituteCode'],
-            res['name'],
-            student,
-            res['role'],
-            res['nickname'],
-            res['picture'],
-            '',
-        );
-
-        console.log(user);
-        
-        return user;
+        return Grade.fromJSON(res);
     }
 
-    static listGrades = async (): Promise<any> => {
+    static listGrades = async (): Promise<Grade[]> => {
         const res = await Database.readAll('grade');
-        return res;
+        return res.map((d: any): Grade => {
+            return Grade.fromJSON(d['doc']);
+        });
     }
 }

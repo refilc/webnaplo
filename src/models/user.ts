@@ -1,17 +1,5 @@
-interface User {
-    id: string,
-    username: string,
-    password: string;
-    instituteCode: string;
-    name: string;
-    student: UserStudent;
-    role: string;
-    nickname: string;
-    picture: string;
-}
-
-export class LoginUser implements User {
-    constructor(id: string, username: string, password: string, instituteCode: string, name: string, student: UserStudent, role: string, nickname: string, picture: string, accessToken: string) {
+export class LoginUser {
+    constructor(id: string, username: string, password: string, instituteCode: string, name: string, student: Student, role: string, nickname: string, picture: string, accessToken: string) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -29,27 +17,44 @@ export class LoginUser implements User {
     password: string;
     instituteCode: string;
     name: string;
-    student: UserStudent;
+    student: Student;
     role: string;
     nickname: string;
     picture: string;
     accessToken: string;
+
+    static fromJSON(json: any): LoginUser {
+        const student = new Student(
+            json['student']['json'],
+            json['student']['id'],
+            json['student']['name'],
+            json['student']['school'],
+            json['student']['birth'],
+            json['student']['yearId'],
+            json['student']['addjsons'],
+            json['student']['groupId'],
+            json['student']['parents'],
+            json['student']['className']
+        );
+
+        const user = new LoginUser(
+            json['_id'],
+            json['username'],
+            json['password'],
+            json['instituteCode'],
+            json['name'],
+            student,
+            json['role'],
+            json['nickname'],
+            json['picture'],
+            json['accessToken'],
+        );
+        
+        return user;
+    }
 }
 
-interface Student {
-    json: any,
-    id: string,
-    name: string,
-    school: string,
-    birth: Date,
-    yearId: string,
-    address: string,
-    groupId: string,
-    parents: string[],
-    className: string,
-}
-
-export class UserStudent implements Student {
+export class Student {
     constructor(json: any, id: string, name: string, school: string, birth: Date, yearId: string, address: string, groupId: string, parents: string[], className: string) {
         this.json = json;
         this.id = id;
@@ -74,13 +79,13 @@ export class UserStudent implements Student {
     parents: string[];
     className: string;
 
-    static fromKretaJSON(json: any): UserStudent {
+    static fromKretaJSON(json: any): Student {
         const parents: string[] = [];
         json['Gondviselok'].forEach((parent: any) => {
             parents.push(parent['Nev']);
         });
 
-        return new UserStudent(
+        return new Student(
             json ?? '',
             json['Uid'] ?? '',
             json['Nev'] ?? json['SzuletesiNev'] ?? '',

@@ -2,6 +2,7 @@ import PouchDB from 'pouchdb';
 
 const userDatabase = new PouchDB('users');
 const gradeDatabase = new PouchDB('grades');
+const absenceDatabase = new PouchDB('absences');
 
 export class Database {
     static store = (type: string, doc: any) => {
@@ -13,6 +14,11 @@ export class Database {
                 break;
             case 'grade':
                 gradeDatabase.put(doc).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case 'absence':
+                absenceDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -31,6 +37,11 @@ export class Database {
                 break;
             case 'grade':
                 result = await gradeDatabase.get(key).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case 'absence':
+                result = await absenceDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -57,9 +68,17 @@ export class Database {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
+            case 'absence':
+                result = await absenceDatabase.allDocs({
+                    include_docs: true,
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
             default:
                 console.log(`[reFilc-DB]: Unknown type "${type}"`);
         }
+        console.log(result?.rows);
         return result?.rows;
     }
 
@@ -75,6 +94,13 @@ export class Database {
             case 'grade':
                 gradeDatabase.get(key).then(function (doc) {
                     gradeDatabase.remove(doc);
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case 'absence':
+                absenceDatabase.get(key).then(function (doc) {
+                    absenceDatabase.remove(doc);
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });

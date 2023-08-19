@@ -1,13 +1,11 @@
+import { Absence } from "../../../models/absence";
 import { Config } from "../../../models/config";
-import { Grade } from "../../../models/grade";
-import { GradeDB } from "../../db/grades";
 import { UserDB } from "../../db/users";
 import { KretaAPI } from "../api";
 import { KretaClient } from "../client";
 
-export class GradeProvider {
-    static _grades: Grade[] = [];
-    static _groups: string = '';
+export class AbsenceProvider {
+    static _absences: Absence[] = [];
 
     static fetch = async (): Promise<any> => {
         const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
@@ -16,20 +14,18 @@ export class GradeProvider {
         kretaClient.userAgent = config.userAgent();
 
         const user = await UserDB.currentUser();
-        if (!user) throw 'Cannot fetch Grades for User null';
+        if (!user) throw 'Cannot fetch Absences for User null';
 
         kretaClient.accessToken = user.accessToken;
 
-        const gradesJson = await kretaClient.getAPI(KretaAPI.grades(user.instituteCode), {}, {});
-        if (!gradesJson) throw `Cannot fetch Grades for User ${user.id}`;
-        const grades: Grade[] = gradesJson.map((e: any) => Grade.fromKretaJSON(e));
+        const absencesJson = await kretaClient.getAPI(KretaAPI.absences(user.instituteCode), {}, {});
+        if (!absencesJson) throw `Cannot fetch Absences for User ${user.id}`;
+        const absences: Absence[] = absencesJson.map((e: any) => Absence.fromKretaJSON(e));
 
-        if (grades.length > 0 || this._grades.length > 0) await GradeProvider.store(grades);
+        if (absences.length > 0 || this._absences.length > 0) await AbsenceProvider.store(absences);
 
         const groupsJson = await kretaClient.getAPI(KretaAPI.groups(user.instituteCode), {}, {});
         if (!groupsJson || groupsJson.length == 0) throw `Cannot fetch Groups for User ${user.id}`;
-
-        this._groups = (groupsJson[0]['OktatasNevelesiFeladat'] ?? {})['Uid'] ?? '';
 
         // const groupAvgJson = await kretaClient.getAPI(KretaAPI.groupAverages(user.instituteCode, this._groups), {}, {});
         // if (!groupAvgJson) throw `Cannot fetch Class Averages for User ${user.id}`;
@@ -37,14 +33,15 @@ export class GradeProvider {
         // await storeGroupAvg(groupAvgs);
     }
 
-    static store = async (grades: Grade[]): Promise<any> => {
+    static store = async (grades: Absence[]): Promise<any> => {
         const user = await UserDB.currentUser();
         if (!user) throw 'Cannot store Grades for User null';
 
-        grades.map((grade) => {
-            GradeDB.addGrade(grade, user);
+        grades.map((grade, i) => {
+            console.log(i + ' ' + grade.id);
+            //GradeDB.addGrade(grade, user);
         });
 
-        this._grades = grades;
+        this._absences = grades;
     }
 }

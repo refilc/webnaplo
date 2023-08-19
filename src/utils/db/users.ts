@@ -1,4 +1,4 @@
-import { LoginUser, UserStudent } from '../../models/user';
+import { LoginUser } from '../../models/user';
 import { Database } from './db';
 import { UserSettings } from '../settings';
 
@@ -40,34 +40,7 @@ export class UserDB {
         const res = await Database.read('user', id);
         if (!res) return null;
 
-        const student = new UserStudent(
-            res['student']['json'],
-            res['student']['id'],
-            res['student']['name'],
-            res['student']['school'],
-            res['student']['birth'],
-            res['student']['yearId'],
-            res['student']['address'],
-            res['student']['groupId'],
-            res['student']['parents'],
-            res['student']['className']
-        );
-        const user = new LoginUser(
-            res['_id'],
-            res['username'],
-            res['password'],
-            res['instituteCode'],
-            res['name'],
-            student,
-            res['role'],
-            res['nickname'],
-            res['picture'],
-            res['accessToken'],
-        );
-
-        console.log(user);
-        
-        return user;
+        return LoginUser.fromJSON(res);
     }
 
     static listUsers = async (): Promise<any> => {
