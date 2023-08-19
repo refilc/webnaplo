@@ -1,12 +1,12 @@
-import { Absence } from "../../../models/absence";
 import { Config } from "../../../models/config";
-import { AbsenceDB } from "../../db/absences";
+import { Note } from "../../../models/note";
+import { NotesDB } from "../../db/notes";
 import { UserDB } from "../../db/users";
 import { KretaAPI } from "../api";
 import { KretaClient } from "../client";
 
-export class AbsenceProvider {
-    static _absences: Absence[] = [];
+export class NoteProvider {
+    static _notes: Note[] = [];
 
     static fetch = async (): Promise<any> => {
         const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
@@ -15,15 +15,15 @@ export class AbsenceProvider {
         kretaClient.userAgent = config.userAgent();
 
         const user = await UserDB.currentUser();
-        if (!user) throw 'Cannot fetch Absences for User null';
+        if (!user) throw 'Cannot fetch Notes for User null';
 
         kretaClient.accessToken = user.accessToken;
 
-        const absencesJson = await kretaClient.getAPI(KretaAPI.absences(user.instituteCode), {}, {});
-        if (!absencesJson) throw `Cannot fetch Absences for User ${user.id}`;
-        const absences: Absence[] = absencesJson.map((e: any) => Absence.fromKretaJSON(e));
+        const notesJson = await kretaClient.getAPI(KretaAPI.notes(user.instituteCode), {}, {});
+        if (!notesJson) throw `Cannot fetch Notes for User ${user.id}`;
+        const notes: Note[] = notesJson.map((e: any) => Note.fromKretaJSON(e));
 
-        if (absences.length > 0 || this._absences.length > 0) await AbsenceProvider.store(absences);
+        if (notes.length > 0 || this._notes.length > 0) await NoteProvider.store(notes);
 
         const groupsJson = await kretaClient.getAPI(KretaAPI.groups(user.instituteCode), {}, {});
         if (!groupsJson || groupsJson.length == 0) throw `Cannot fetch Groups for User ${user.id}`;
@@ -34,14 +34,14 @@ export class AbsenceProvider {
         // await storeGroupAvg(groupAvgs);
     }
 
-    static store = async (absences: Absence[]): Promise<any> => {
+    static store = async (notes: Note[]): Promise<any> => {
         const user = await UserDB.currentUser();
-        if (!user) throw 'Cannot store Absences for User null';
+        if (!user) throw 'Cannot store Notes for User null';
 
-        absences.map((absence) => {
-            AbsenceDB.addAbsence(absence, user);
+        notes.map((note) => {
+            NotesDB.addNote(note, user);
         });
 
-        this._absences = absences;
+        this._notes = notes;
     }
 }

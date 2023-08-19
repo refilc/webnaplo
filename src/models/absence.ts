@@ -82,7 +82,7 @@ export class Absence {
             lessonStart,
             lessonEnd,
             json['Ora']['Oraszam'] ?? 0,
-            json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] : '',
+            json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] ?? '' : '',
         );
     }
 

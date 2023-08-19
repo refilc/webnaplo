@@ -1,5 +1,5 @@
 import { LoginUser } from '../../models/user';
-import { Database } from './db';
+import { Database, DatabaseType } from './db';
 import { UserSettings } from '../settings';
 
 export class UserDB {
@@ -29,22 +29,22 @@ export class UserDB {
             'accessToken': accessToken,
         };
 
-        Database.store('user', addData);
+        Database.store(DatabaseType.user, addData);
     }
 
     static deleteUser = (id: string) => {
-        Database.remove('user', id);
+        Database.remove(DatabaseType.user, id);
     }
 
     static getUser = async (id: string): Promise<LoginUser | null> => {
-        const res = await Database.read('user', id);
+        const res = await Database.read(DatabaseType.user, id);
         if (!res) return null;
 
         return LoginUser.fromJSON(res);
     }
 
     static listUsers = async (): Promise<any> => {
-        const res = await Database.readAll('user');
+        const res = await Database.readAll(DatabaseType.user);
         return res;
     }
 

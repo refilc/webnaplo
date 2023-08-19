@@ -1,6 +1,6 @@
 import { Absence, Justification } from '../../models/absence';
 import { LoginUser } from '../../models/user';
-import { Database } from './db';
+import { Database, DatabaseType } from './db';
 
 export class AbsenceDB {
     static addAbsence = (absence: Absence, user: LoginUser) => {
@@ -41,22 +41,22 @@ export class AbsenceDB {
             'groupId': groupId,
         };
 
-        Database.store('absence', addData);
+        Database.store(DatabaseType.absence, addData);
     }
 
     static deleteAbsence = (id: string) => {
-        Database.remove('absence', id);
+        Database.remove(DatabaseType.absence, id);
     }
 
     static getAbsence = async (id: string): Promise<Absence | null> => {
-        const res = await Database.read('absence', id);
+        const res = await Database.read(DatabaseType.absence, id);
         if (!res) return null;
 
         return Absence.fromJSON(res);
     }
 
     static listAbsences = async (): Promise<Absence[]> => {
-        const res = await Database.readAll('absence');
+        const res = await Database.readAll(DatabaseType.absence);
         return res.map((d: any): Absence => {
             return Absence.fromJSON(d['doc']);
         });

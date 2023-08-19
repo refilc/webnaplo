@@ -64,7 +64,7 @@ export class Grade {
             json['ErtekeloTanarNeve'] ?? '',
             json['Tema'].replace(/^./, json['Tema'].charAt(0).toUpperCase()) ?? '',
             json['Tipus']['Nev'] ?? '',
-            json['OsztalyCsoport']['Uid'] ?? '',
+            json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] ?? '' : '',
             Subject.fromKretaJSON(json['Tantargy'] ?? {}),
             Category.fromKretaJSON(json['ErtekFajta'] ?? {}),
             Category.fromKretaJSON(json['Mod'] ?? {}),
@@ -97,7 +97,7 @@ export class Grade {
             json['mode']['description'],
             json['mode']['name'],
         );
-        
+
         const grade = new Grade(
             json['json'],
             json['_id'],

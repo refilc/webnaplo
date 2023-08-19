@@ -5,19 +5,19 @@ const gradeDatabase = new PouchDB('grades');
 const absenceDatabase = new PouchDB('absences');
 
 export class Database {
-    static store = (type: string, doc: any) => {
+    static store = (type: DatabaseType, doc: any) => {
         switch (type) {
-            case 'user':
+            case DatabaseType.user:
                 userDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'grade':
+            case DatabaseType.grade:
                 gradeDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'absence':
+            case DatabaseType.absence:
                 absenceDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
@@ -27,20 +27,20 @@ export class Database {
         }
     }
 
-    static read = async (type: string, key: string): Promise<any> => {
+    static read = async (type: DatabaseType, key: string): Promise<any> => {
         let result;
         switch (type) {
-            case 'user':
+            case DatabaseType.user:
                 result = await userDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'grade':
+            case DatabaseType.grade:
                 result = await gradeDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'absence':
+            case DatabaseType.absence:
                 result = await absenceDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
@@ -51,24 +51,24 @@ export class Database {
         return result;
     }
 
-    static readAll = async (type: string): Promise<any> => {
+    static readAll = async (type: DatabaseType): Promise<any> => {
         let result;
         switch (type) {
-            case 'user':
+            case DatabaseType.user:
                 result = await userDatabase.allDocs({
                     include_docs: true,
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'grade':
+            case DatabaseType.grade:
                 result = await gradeDatabase.allDocs({
                     include_docs: true,
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'absence':
+            case DatabaseType.absence:
                 result = await absenceDatabase.allDocs({
                     include_docs: true,
                 }).catch(function (err) {
@@ -82,23 +82,23 @@ export class Database {
         return result?.rows;
     }
 
-    static remove = (type: string, key: string) => {
+    static remove = (type: DatabaseType, key: string) => {
         switch (type) {
-            case 'user':
+            case DatabaseType.user:
                 userDatabase.get(key).then(function (doc) {
                     userDatabase.remove(doc);
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'grade':
+            case DatabaseType.grade:
                 gradeDatabase.get(key).then(function (doc) {
                     gradeDatabase.remove(doc);
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
-            case 'absence':
+            case DatabaseType.absence:
                 absenceDatabase.get(key).then(function (doc) {
                     absenceDatabase.remove(doc);
                 }).catch(function (err) {
@@ -109,4 +109,12 @@ export class Database {
                 console.log(`[reFilc-DB]: Unknown type "${type}"`);
         }
     }
+}
+
+export enum DatabaseType {
+    user,
+    grade,
+    absence,
+    note,
+    homework,
 }

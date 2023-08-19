@@ -1,5 +1,5 @@
 import { LoginUser } from '../../models/user';
-import { Database } from './db';
+import { Database, DatabaseType } from './db';
 import { Grade } from '../../models/grade';
 
 export class GradeDB {
@@ -41,22 +41,22 @@ export class GradeDB {
             'form': form,
         };
 
-        Database.store('grade', addData);
+        Database.store(DatabaseType.grade, addData);
     }
 
     static deleteGrade = (id: string) => {
-        Database.remove('grade', id);
+        Database.remove(DatabaseType.grade, id);
     }
 
     static getGrade = async (id: string): Promise<Grade | null> => {
-        const res = await Database.read('grade', id);
+        const res = await Database.read(DatabaseType.grade, id);
         if (!res) return null;
 
         return Grade.fromJSON(res);
     }
 
     static listGrades = async (): Promise<Grade[]> => {
-        const res = await Database.readAll('grade');
+        const res = await Database.readAll(DatabaseType.grade);
         return res.map((d: any): Grade => {
             return Grade.fromJSON(d['doc']);
         });
