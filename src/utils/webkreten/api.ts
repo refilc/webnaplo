@@ -20,7 +20,7 @@ class KretaApiEndpoints {
     static timetable = "/ellenorzo/V3/Sajat/OrarendElemek";
     static exams = "/ellenorzo/V3/Sajat/BejelentettSzamonkeresek";
     static homework = "/ellenorzo/V3/Sajat/HaziFeladatok";
-    // static homeworkDone = "/ellenorzo/V3/Sajat/HaziFeladatok/Megoldva"; // Removed from the API
+    // static homeworkDone = "/ellenorzo/V3/Sajat/HaziFeladatok/Megoldva"; // removed from the API
     static capabilities = "/ellenorzo/V3/Sajat/Intezmenyek";
     static downloadHomeworkAttachments(uid: string, type: string) {
         type;
@@ -77,7 +77,7 @@ export class KretaAPI {
     }
     static timetable(iss: string, start: Date, end: Date) {
         return BaseKreta.kreta(iss) + KretaApiEndpoints.timetable +
-            (start != null && end != null ? "?datumTol=" + start.toUTCString() + "&datumIg=" + end.toISOString() : "");
+            (start != null && end != null ? "?datumTol=" + start.toISOString() + "&datumIg=" + end.toISOString() : "");
     }
     static exams(iss: string) {
         return BaseKreta.kreta(iss) + KretaApiEndpoints.exams;

@@ -1,5 +1,6 @@
 import { Absence } from "../../../models/absence";
 import { Config } from "../../../models/config";
+import { AbsenceDB } from "../../db/absences";
 import { UserDB } from "../../db/users";
 import { KretaAPI } from "../api";
 import { KretaClient } from "../client";
@@ -33,15 +34,15 @@ export class AbsenceProvider {
         // await storeGroupAvg(groupAvgs);
     }
 
-    static store = async (grades: Absence[]): Promise<any> => {
+    static store = async (absences: Absence[]): Promise<any> => {
         const user = await UserDB.currentUser();
-        if (!user) throw 'Cannot store Grades for User null';
+        if (!user) throw 'Cannot store Absences for User null';
 
-        grades.map((grade, i) => {
-            console.log(i + ' ' + grade.id);
-            //GradeDB.addGrade(grade, user);
+        absences.map((absence, i) => {
+            console.log(i + ' ' + absence.id);
+            AbsenceDB.addAbsence(absence, user);
         });
 
-        this._absences = grades;
+        this._absences = absences;
     }
 }
