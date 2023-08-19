@@ -1,4 +1,8 @@
 // import { X509Certificate } from "crypto";
+import { LoginUser } from "../../models/user";
+import { UserDB } from "../db/users";
+import { JwtUtils } from "../jwt";
+import { UserSettings } from "../settings";
 import { KretaAPI } from "./api";
 import { Nonce, getNonce } from "./nonce";
 
@@ -23,8 +27,10 @@ export class KretaClient {
                     if (!headers['authorization'] && this.accessToken) headers['authorization'] = `Bearer ${this.accessToken}`;
                     if (!headers['user-agent'] && this.userAgent) headers['user-agent'] = this.userAgent;
                 }
+
+                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + encodeURIComponent(url));
             
-                res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
+                res = await fetch(finalUrl, {
                     method: 'GET',
                     headers: headers,
                 });
@@ -67,14 +73,16 @@ export class KretaClient {
                     if (!headers['user-agent'] && this.userAgent) headers['user-agent'] = this.userAgent;
                     if (!headers['content-type']) headers['content-type'] = 'application/json';
                 }
+
+                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + encodeURIComponent(url));
             
-                res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), {
+                res = await fetch(finalUrl, {
                     method: 'POST',
                     headers: headers,
                     body: body,
                 });
         
-                if (res.status == 401) {
+                if (res.status == 401 && !url.includes('/connect/token')) {
                     await this.refreshLogin();
                     delete headers['authorization'];
                 } else {
@@ -99,7 +107,8 @@ export class KretaClient {
     }
 
     async refreshLogin() {
-        // if ('majd_lesz_user_check' == null) return;
+        const user = await UserDB.currentUser();
+        if (!user) return;
 
         const headers = new Map<string, string>([
             ['content-type', 'application/x-www-form-urlencoded'],
@@ -120,26 +129,40 @@ export class KretaClient {
         //     'grant_type': 'password',
         //     'client_id': KretaAPI.clientId,
         // };
-        const loginBody: string = `userName=72687219753&password=2007-09-05&institute_code=bgeszc-ganz&client_id${KretaAPI.clientId}&grant_type=password`;
+        const loginBody: string = `userName=${user.username}&password=${user.password}&institute_code=${user.instituteCode}&client_id=${KretaAPI.clientId}&grant_type=password`;
 
         // console.log(`DEBUG: refreshLogin: ${loginUser.id} ${loginUser.name}`);
-        const loginRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
+        const loginRes = await this.postAPI(KretaAPI.login, loginBody, Object.fromEntries(headers), {});
 
         if (loginRes) {
-            if (loginRes.has("access_token")) this.accessToken = loginRes.get("access_token");
-            if (loginRes.has("refresh_token")) this.refreshToken = loginRes.get("refresh_token");
+            if (loginRes["access_token"]) this.accessToken = loginRes["access_token"];
+            if (loginRes["refresh_token"]) this.refreshToken = loginRes["refresh_token"];
       
+            const newUser = new LoginUser(
+                user.id,
+                user.username,
+                user.password,
+                user.instituteCode,
+                user.student.name,
+                user.student,
+                JwtUtils.getRoleFromJWT(loginRes["access_token"])!,
+                '',
+                '',
+                loginRes["access_token"],
+            );
+            UserDB.deleteUser(user.id);
+            UserDB.addUser(newUser);
             // Update role
             // loginUser.role =
             //     JwtUtils.getRoleFromJWT(accessToken ?? "") ?? Role.student;
         }
 
         if (this.refreshToken) {
-            const refreshBody: string = `refresh_token=${this.refreshToken}&institute_code=bgeszc-ganz&client_id=${KretaAPI.clientId}&grant_type=refresh_token&refresh_user_data=${false}`;
+            const refreshBody: string = `refresh_token=${this.refreshToken}&institute_code=${user.instituteCode}&client_id=${KretaAPI.clientId}&grant_type=refresh_token&refresh_user_data=${false}`;
 
-            const refreshRes: Map<any, any> | undefined = await this.postAPI(KretaAPI.login, refreshBody, Object.fromEntries(headers), {});
+            const refreshRes = await this.postAPI(KretaAPI.login, refreshBody, Object.fromEntries(headers), {});
             if (refreshRes != null) {
-                if (refreshRes.has("id_token")) this.idToken = refreshRes.get("id_token");
+                if (refreshRes["id_token"]) this.idToken = refreshRes["id_token"];
             }
         }
     }

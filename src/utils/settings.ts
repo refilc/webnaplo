@@ -7,6 +7,7 @@ export class Settings {
             const defaultSettings = {
                 'xFilcID': DefaultSettings.xFilcID,
                 'currentUser': DefaultSettings.currentUser,
+                'corsProxy': DefaultSettings.corsProxy,
             }
 
             const stringSettings: string = this.parseToString(defaultSettings);
@@ -44,6 +45,9 @@ export class UserSettings {
     static get currentUser() {
         return Settings.get('currentUser');
     }
+    static get corsProxy() {
+        return Settings.get('corsProxy');
+    }
 }
 
 export class DefaultSettings {
@@ -51,4 +55,5 @@ export class DefaultSettings {
         return v4();
     }
     static currentUser = null;
+    static corsProxy = 'https://corsproxy.io/?';
 }

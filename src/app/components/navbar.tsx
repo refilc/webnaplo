@@ -1,9 +1,12 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLoaderData, useLocation } from 'react-router-dom';
 import * as Icon from 'react-feather';
 import fullLogo from '/image/brand/full_logo.svg?url';
 
 const NavBar = () => {
     const location = useLocation();
+    const user: any = useLoaderData();
+
+    const finalName = user.nickname == '' ? user.name.split(' ')[1] : user.nickname;
 
     const navLinks: { href: string; name: string; }[] = [
         {
@@ -57,10 +60,10 @@ const NavBar = () => {
                 })}
             </div>
             <div className='flex flex-row items-center justify-end w-max h-max gap-5 flex-1 pr-1'>
-                <p className='font-bold'>Szép napot, János!</p>
+                <p className='font-bold'>Szép napot, {finalName}!</p>
                 <div onClick={profileClick} className='cursor-pointer'>
                     <div className='rounded-full bg-refilc w-[44px] h-[44px] flex items-center justify-center'>
-                        <p className='text-sm'>J</p>
+                        <p className='text-sm'>{finalName.charAt(0)}</p>
                     </div>
                 </div>
             </div>

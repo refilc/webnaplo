@@ -3,13 +3,15 @@ import { UserDB } from "../db/users";
 import { KretaClient } from "../webkreten/client";
 import { Config } from "../../models/config";
 import { Nonce, getNonce } from "../webkreten/nonce";
-import { LoginUser } from "../../models/user";
+import { LoginUser, UserStudent } from "../../models/user";
 import { Settings } from "../settings";
 import { JwtUtils } from "../jwt";
 import { v4 } from "uuid";
 
-export async function loginAPI(username: string, password: string, instituteCode: string, onLogin?: Function, onSuccess?: Function) {
+export async function loginAPI(username: string, password: string, instituteCode: string, corsProxy: string, onLogin?: Function, onSuccess?: Function) {
     const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
+
+    Settings.set('corsProxy', corsProxy);
 
     const kretaClient = new KretaClient();
     kretaClient.userAgent = config.userAgent();
@@ -47,9 +49,21 @@ export async function loginAPI(username: string, password: string, instituteCode
                 try {
                     kretaClient.accessToken = res["access_token"];
                     const studentJson = await kretaClient.getAPI(KretaAPI.student(instituteCode), {}, {});
+                    const student = UserStudent.fromKretaJSON(studentJson);
 
                     const userID = v4();
-                    const user = new LoginUser(userID, username, password, instituteCode, studentJson['name'], 'will-be', JwtUtils.getRoleFromJWT(res["access_token"])!, '', '');
+                    const user = new LoginUser(
+                        userID,
+                        username,
+                        password,
+                        instituteCode,
+                        student.name,
+                        student,
+                        JwtUtils.getRoleFromJWT(res["access_token"])!,
+                        '',
+                        '',
+                        res["access_token"],
+                    );
             
                     if (onLogin != null) await onLogin(user);
             

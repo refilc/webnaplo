@@ -18,6 +18,7 @@ const authedUser = async (): Promise<LoginUser | null> => {
 }
 
 const router = createBrowserRouter([
+    // app/main routes
     {
         path: '/',
         element: <MainLayout />,
@@ -64,6 +65,20 @@ const router = createBrowserRouter([
                 return redirect('/');
             }
             return null;
+        },
+    },
+    // go quick links
+    {
+        path: '/go/:link',
+        loader: async ({ params }) => {
+            switch (params.link) {
+                case 'cors':
+                    return redirect('https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS');
+                case 'cors-proxy':
+                    return redirect('https://httptoolkit.com/blog/cors-proxies/');
+                default:
+                    return redirect('/');
+            }
         },
     },
 ]);
