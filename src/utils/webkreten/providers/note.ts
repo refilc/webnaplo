@@ -1,6 +1,6 @@
 import { Config } from "../../../models/config";
 import { Note } from "../../../models/note";
-import { NotesDB } from "../../db/note";
+import { NoteDB } from "../../db/note";
 import { UserDB } from "../../db/user";
 import { KretaAPI } from "../api";
 import { KretaClient } from "../client";
@@ -39,7 +39,7 @@ export class NoteProvider {
         if (!user) throw 'Cannot store Notes for User null';
 
         notes.map((note) => {
-            NotesDB.addNote(note, user);
+            NoteDB.addNote(note, user);
         });
 
         this._notes = notes;

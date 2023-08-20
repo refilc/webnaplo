@@ -61,7 +61,7 @@ export class Grade {
                 json['SzovegesErtekelesRovidNev'] ?? '',
                 json['SulySzazalekErteke'] ?? 0,
             ),
-            json['ErtekeloTanarNeve'] ?? '',
+            (json['ErtekeloTanarNeve'] ?? '').trim(),
             json['Tema'].replace(/^./, json['Tema'].charAt(0).toUpperCase()) ?? '',
             json['Tipus']['Nev'] ?? '',
             json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] ?? '' : '',

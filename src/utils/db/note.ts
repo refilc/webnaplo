@@ -2,7 +2,7 @@ import { Note } from '../../models/note';
 import { LoginUser } from '../../models/user';
 import { Database, DatabaseType } from './db';
 
-export class NotesDB {
+export class NoteDB {
     static addNote = (note: Note, user: LoginUser) => {
         const { id, json, title, date, submitDate, seenDate, teacher, groupId, content, type } = note;
         const addData = {

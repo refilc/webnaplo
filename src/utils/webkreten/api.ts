@@ -82,9 +82,9 @@ export class KretaAPI {
     static exams(iss: string) {
         return BaseKreta.kreta(iss) + KretaApiEndpoints.exams;
     }
-    static homework(iss: string, start: Date, id: string) {
+    static homework(iss: string, start?: Date, id?: string) {
         return BaseKreta.kreta(iss) + KretaApiEndpoints.homework +
-            (id != null ? `/${id}` : "") + (id == null && start != null ? "?datumTol=" + start.toLocaleDateString('sv') : "");
+            (id ? `/${id}` : "") + (!id && start ? "?datumTol=" + start.toLocaleDateString('sv') : "");
     }
     static capabilities(iss: string) {
         return BaseKreta.kreta(iss) + KretaApiEndpoints.capabilities;

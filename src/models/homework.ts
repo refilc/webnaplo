@@ -15,7 +15,7 @@ export class Homework {
         content: string,
         subject: Subject,
         groupId: string,
-        attachments: [],
+        attachments: HomeworkAttachment[],
     ) {
         this.json = json;
         this.id = id;
@@ -42,7 +42,7 @@ export class Homework {
     content: string;
     subject: Subject;
     groupId: string;
-    attachments: [];
+    attachments: HomeworkAttachment[];
 
     static fromKretaJSON(json: any): Homework {
         return new Homework(

@@ -45,7 +45,7 @@ export class Note {
             new Date(json['Datum'] ?? null),
             new Date(json['KeszitesDatuma'] ?? null),
             new Date(json['LattamozasDatuma'] ?? null),
-            json['KeszitoTanarNeve'] ?? '',
+            (json['KeszitoTanarNeve'] ?? '').trim(),
             json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] ?? '' : '',
             json['Tartalom'].replace('\r', '') ?? '',
             Category.fromKretaJSON(json['Tipus'] ?? {}),
