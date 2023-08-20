@@ -87,29 +87,7 @@ export class Absence {
     }
 
     static fromJSON(json: any): Absence {
-        const justification = new Category(
-            json['justification']['id'],
-            json['justification']['description'],
-            json['justification']['name'],
-        );
-        const type = new Category(
-            json['type']['id'],
-            json['type']['description'],
-            json['type']['name'],
-        );
-        const mode = new Category(
-            json['mode']['id'],
-            json['mode']['description'],
-            json['mode']['name'],
-        );
-        const subject = new Subject(
-            json['subject']['id'],
-            json['subject']['category'],
-            json['subject']['name'],
-            json['subject']['renamedTo'],
-        )
-
-        const absence = new Absence(
+        return new Absence(
             json,
             json['_id'],
             new Date(json['date']),
@@ -119,17 +97,15 @@ export class Absence {
             json['state'] == 'excused' 
                 ? Justification.excused : json['state'] == 'pending' 
                 ? Justification.pending : Justification.unexcused,
-            justification,
-            type,
-            mode,
-            subject,
+            Category.fromJSON(json['justification']),
+            Category.fromJSON(json['type']),
+            Category.fromJSON(json['mode']),
+            Subject.fromJSON(json['subject']),
             new Date(json['lessonStart']),
             new Date(json['lessonEnd']),
             json['lessonIndex'],
             json['groupId'],
         );
-
-        return absence;
     }
 }
   

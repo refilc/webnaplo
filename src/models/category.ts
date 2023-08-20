@@ -20,4 +20,12 @@ export class Category {
             json['Nev'] != 'Na' ? json['Nev'] ?? '' : '',
         );
     }
+
+    static fromJSON(json: any): Category {
+        return new Category(
+            json['id'],
+            json['description'],
+            json['name'],
+        );
+    }
 }

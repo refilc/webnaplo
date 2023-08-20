@@ -1,5 +1,5 @@
 import { KretaAPI } from "../webkreten/api";
-import { UserDB } from "../db/users";
+import { UserDB } from "../db/user";
 import { KretaClient } from "../webkreten/client";
 import { Config } from "../../models/config";
 import { Nonce, getNonce } from "../webkreten/nonce";
@@ -7,8 +7,9 @@ import { LoginUser, Student } from "../../models/user";
 import { Settings } from "../settings";
 import { JwtUtils } from "../jwt";
 import { v4 } from "uuid";
-import { GradeProvider } from "../webkreten/providers/grades";
-import { AbsenceProvider } from "../webkreten/providers/absences";
+import { GradeProvider } from "../webkreten/providers/grade";
+import { AbsenceProvider } from "../webkreten/providers/absence";
+import { NoteProvider } from "../webkreten/providers/note";
 
 export async function loginAPI(username: string, password: string, instituteCode: string, corsProxy: string, onLogin?: Function, onSuccess?: Function): Promise<LoginState> {
     const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
@@ -82,6 +83,7 @@ export async function loginAPI(username: string, password: string, instituteCode
                         // fetch everythin cute from api
                         await GradeProvider.fetch();
                         await AbsenceProvider.fetch();
+                        await NoteProvider.fetch();
 
                         // await Future.wait([
                         //     Provider.of<GradeProvider>(context, listen: false).fetch(),

@@ -1,6 +1,6 @@
 // import { X509Certificate } from "crypto";
 import { LoginUser } from "../../models/user";
-import { UserDB } from "../db/users";
+import { UserDB } from "../db/user";
 import { JwtUtils } from "../jwt";
 import { UserSettings } from "../settings";
 import { KretaAPI } from "./api";

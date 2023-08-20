@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GradeDB } from "../../utils/db/grades";
+import { GradeDB } from "../../utils/db/grade";
 import TileCard from "../components/tilecard";
 import Tile from "../components/tile";
 import { DateGroup } from "../../utils/dategroup";

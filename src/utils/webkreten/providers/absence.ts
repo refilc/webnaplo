@@ -1,7 +1,7 @@
 import { Absence } from "../../../models/absence";
 import { Config } from "../../../models/config";
-import { AbsenceDB } from "../../db/absences";
-import { UserDB } from "../../db/users";
+import { AbsenceDB } from "../../db/absence";
+import { UserDB } from "../../db/user";
 import { KretaAPI } from "../api";
 import { KretaClient } from "../client";
 

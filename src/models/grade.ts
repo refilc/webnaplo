@@ -81,22 +81,6 @@ export class Grade {
             json['value']['shortTextValue'],
             json['value']['percentage'],
         );
-        const subject = new Subject(
-            json['subject']['id'],
-            json['subject']['category'],
-            json['subject']['name'],
-            json['subject']['renamedTo'],
-        );
-        const gradeType = new Category(
-            json['gradeType']['id'],
-            json['gradeType']['description'],
-            json['gradeType']['name'],
-        );
-        const mode = new Category(
-            json['mode']['id'],
-            json['mode']['description'],
-            json['mode']['name'],
-        );
 
         const grade = new Grade(
             json['json'],
@@ -107,9 +91,9 @@ export class Grade {
             json['description'],
             json['type'],
             json['groupId'],
-            subject,
-            gradeType,
-            mode,
+            Subject.fromJSON(json['subject']),
+            Category.fromJSON(json['gradeType']),
+            Category.fromJSON(json['mode']),
             new Date(json['writeDate']),
             new Date(json['seenDate']),
             json['form'],

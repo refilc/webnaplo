@@ -26,4 +26,15 @@ export class Subject {
             '',
         );
     }
+
+    static fromJSON(json: any): Subject {
+        const subject = new Subject(
+            json['id'],
+            json['category'],
+            json['name'],
+            json['renamedTo'],
+        );
+
+        return subject;
+    }
 }

@@ -6,7 +6,7 @@ import MainLayout from './main/layout.tsx';
 import AppLayout from './app/layout.tsx';
 import AuthLayout from './auth/layout.tsx';
 import { Settings } from "./utils/settings.ts";
-import { UserDB } from './utils/db/users.ts';
+import { UserDB } from './utils/db/user.ts';
 import { LoginUser } from './models/user.ts';
 
 const authedUser = async (): Promise<LoginUser | null> => {
