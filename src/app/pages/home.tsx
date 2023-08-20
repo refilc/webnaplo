@@ -11,7 +11,6 @@ import { AbsenceDB } from "../../utils/db/absence";
 import { NoteDB } from "../../utils/db/note";
 import { HomeworkDB } from "../../utils/db/homework";
 import * as Icon from 'react-feather';
-import { NoteProvider } from "../../utils/webkreten/providers/note";
 //import { AbsenceProvider } from "../../utils/webkreten/providers/absence";
 // import { GradeProvider } from "../../utils/webkreten/providers/grades";
 
@@ -21,7 +20,6 @@ const AppHome = () => {
 
     // GradeProvider.fetch();
     //AbsenceProvider.fetch();
-    NoteProvider.fetch();   
 
     const loadData = async () => {
         console.log('Loading data from database..');
@@ -58,7 +56,7 @@ const AppHome = () => {
     return (
         <div className="flex flex-row items-start justify-around max-w-[1000px] w-full flex-wrap mx-10 mt-5">
             <div className="flex flex-col items-start justify-start max-w-[500px]">
-                <p className="text-[20px] ml-2 mb-[-5px]">JEGYEK</p>
+                <p className="text-[20px] ml-2">JEGYEK</p>
                 <div className="flex flex-col items-start justify-start">
                     
                 </div>
@@ -97,7 +95,7 @@ const AppHome = () => {
                 </div>
             </div>
             <div className="flex flex-col items-start justify-start max-w-[500px]">
-                <p className="text-[20px] ml-2 mb-4">EGYÉB</p>
+                <p className="text-[20px] ml-2">EGYÉB</p>
                 <div className="flex flex-col items-start justify-start">
                     
                 </div>
@@ -136,7 +134,7 @@ const AppHome = () => {
                                                         break;
                                                     }
                                                     case Note: {
-                                                        const icon = <div className="bg-refilc text-white p-[10px] rounded-full">
+                                                        const icon = <div className="bg-refilc text-white w-[44px] h-[44px] rounded-full flex items-center justify-center">
                                                             <p>{item.teacher.charAt(0)}</p>
                                                         </div>;
 
