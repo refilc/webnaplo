@@ -42,6 +42,8 @@ export class AbsenceProvider {
             AbsenceDB.addAbsence(absence, user);
         });
 
+        console.log(absences);
+
         this._absences = absences;
     }
 }

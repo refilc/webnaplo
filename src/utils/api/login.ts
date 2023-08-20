@@ -10,6 +10,7 @@ import { v4 } from "uuid";
 import { GradeProvider } from "../webkreten/providers/grade";
 import { AbsenceProvider } from "../webkreten/providers/absence";
 import { NoteProvider } from "../webkreten/providers/note";
+import { HomeworkProvider } from "../webkreten/providers/homework";
 
 export async function loginAPI(username: string, password: string, instituteCode: string, corsProxy: string, onLogin?: Function, onSuccess?: Function): Promise<LoginState> {
     const config: Config = Config.fromJson(JSON.parse(window.localStorage.getItem('config')!));
@@ -84,6 +85,7 @@ export async function loginAPI(username: string, password: string, instituteCode
                         await GradeProvider.fetch();
                         await AbsenceProvider.fetch();
                         await NoteProvider.fetch();
+                        await HomeworkProvider.fetch(new Date(), { db: true });
 
                         // await Future.wait([
                         //     Provider.of<GradeProvider>(context, listen: false).fetch(),

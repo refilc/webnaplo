@@ -48,3 +48,21 @@ export class DateGroup {
         return groupedList;
     }
 }
+
+export class ObjUtils {
+    static mergeAllOthers(absences: Absence[], notes: Note[], homeworks: Homework[]): any[] {
+        const others: (Absence | Note | Homework)[] = [];
+
+        absences.forEach((v) => {
+            others.push(v);
+        });
+        notes.forEach((v) => {
+            others.push(v);
+        });
+        homeworks.forEach((v) => {
+            others.push(v);
+        });
+
+        return others;
+    }
+}

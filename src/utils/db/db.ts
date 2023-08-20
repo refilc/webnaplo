@@ -114,7 +114,6 @@ export class Database {
             default:
                 console.log(`[reFilc-DB]: Unknown type "${type}"`);
         }
-        console.log(result?.rows);
         return result?.rows;
     }
 

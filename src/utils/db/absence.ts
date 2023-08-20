@@ -57,6 +57,7 @@ export class AbsenceDB {
 
     static listAbsences = async (): Promise<Absence[]> => {
         const res = await Database.readAll(DatabaseType.absence);
+        console.log(res, 'fasz');
         return res.map((d: any): Absence => {
             return Absence.fromJSON(d['doc']);
         });
