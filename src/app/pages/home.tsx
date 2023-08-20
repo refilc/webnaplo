@@ -4,21 +4,54 @@ import TileCard from "../components/tilecard";
 import Tile from "../components/tile";
 import { DateGroup } from "../../utils/dategroup";
 import { Grade } from "../../models/grade";
+import { Absence, Justification } from "../../models/absence";
+import { Note } from "../../models/note";
+import { Homework } from "../../models/homework";
+import { AbsenceDB } from "../../utils/db/absence";
+import { NoteDB } from "../../utils/db/note";
+import { HomeworkDB } from "../../utils/db/homework";
 // import { GradeProvider } from "../../utils/webkreten/providers/grades";
 
 const AppHome = () => {
     const [grades, setGrades] = useState<Grade[]>();
+    const [others, setOthers] = useState<(Absence | Note | Homework)[]>();
 
     // GradeProvider.fetch();
 
     useEffect(() => {
-        GradeDB.listGrades().then((grades) => {
+        const loadData = async () => {
+            // load grades
+            const grades = await GradeDB.listGrades();
             grades.sort((a: Grade, b: Grade) => -a.date.toISOString().localeCompare(b.date.toISOString()));
-            setGrades(DateGroup.groupGrades(grades))
-        });
-    }, []);
 
-    if (grades) console.log(grades);
+            // load absences
+            const absences: Absence[] = await AbsenceDB.listAbsences();
+            absences.sort((a: Absence, b: Absence) => -a.date.toISOString().localeCompare(b.date.toISOString()));
+            // load notes
+            const notes = await NoteDB.listNotes();
+            notes.sort((a: Note, b: Note) => -a.date.toISOString().localeCompare(b.date.toISOString()));
+            // load homeworks
+            const homeworks = await HomeworkDB.listHomeworks();
+            homeworks.sort((a: Homework, b: Homework) => -a.date.toISOString().localeCompare(b.date.toISOString()));
+
+            // put things together
+            const others: (Absence | Note | Homework)[] = [];
+            absences.forEach((v) => {
+                others.push(v);
+            });
+            notes.forEach((v) => {
+                others.push(v);
+            });
+            homeworks.forEach((v) => {
+                others.push(v);
+            });
+
+            // set variables
+            setGrades(DateGroup.groupGrades(grades));
+            setOthers(DateGroup.groupOthers(others));
+        }
+        loadData();
+    });
 
     return (
         <div className="flex flex-row items-start justify-around max-w-[1000px] w-full flex-wrap mx-10 mt-5">
@@ -67,27 +100,37 @@ const AppHome = () => {
                     
                 </div>
                 <div className="flex flex-col items-start justify-start w-full gap-5">
-                    <TileCard>
-                        {
-                            // grades ? grades.map((d: any) => {
-                            //     const g = d['doc'];
-                            //     const gradeColor = (
-                            //         g.value.numValue == 5 ? 'text-grade-5' :
-                            //         g.value.numValue == 4 ? 'text-grade-4' :
-                            //         g.value.numValue == 3 ? 'text-grade-3' :
-                            //         g.value.numValue == 2 ? 'text-grade-2' :
-                            //         g.value.numValue == 1 ? 'text-grade-1' :
-                            //         'text-white'
-                            //     );
+                    {
+                        others ? others.map((group: any) => {
+                            return (
+                                <div className="flex flex-col items-end justify-start w-full">
+                                    <p className="text-[14px] mr-2 mb-2 opacity-70">{group['date']}</p>
+                                    <TileCard key={group['date']}>
+                                        {
+                                            group['items'].map((item: any) => {
+                                                let widget = <div></div>;
 
-                            //     return (
-                            //         <Tile title={g['description']} leading={null} description={g['subject']['name']} trailing={
-                            //             <div className={gradeColor + ' text-[30px] font-bold'}>{g.value.numValue + (g.value.numValue > 5 ? '%' : '')}</div>
-                            //         } />
-                            //     )
-                            // }) : (<div>tolt geci</div>)
-                        }
-                    </TileCard>
+                                                switch (item.constructor) {
+                                                    case Absence: {
+                                                        const justification = 
+                                                            item.justification == Justification.excused ? 'Igazolt hiányzás' :
+                                                            item.justification == Justification.pending ? 'Igazolandó hiányzás' :
+                                                            'Igazolazlan hiányzás';
+
+                                                        widget = <Tile title={justification} leading={null} description={item.subject.name} trailing={null} />;
+                                                    }
+                                                }
+                                                
+                                                return widget;
+                                            })
+                                        }
+                                    </TileCard>
+                                </div>
+                                
+                            )
+                        }) : <p>Betöltés...</p>
+                    }
+                    
                 </div>
             </div>
         </div>

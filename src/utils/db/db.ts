@@ -3,7 +3,8 @@ import PouchDB from 'pouchdb';
 const userDatabase = new PouchDB('users');
 const gradeDatabase = new PouchDB('grades');
 const absenceDatabase = new PouchDB('absences');
-const homeworkDatabase = new PouchDB('homework');
+const noteDatabase = new PouchDB('notes');
+const homeworkDatabase = new PouchDB('homeworks');
 
 export class Database {
     static store = (type: DatabaseType, doc: any) => {
@@ -20,6 +21,11 @@ export class Database {
                 break;
             case DatabaseType.absence:
                 absenceDatabase.put(doc).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.note:
+                noteDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -48,6 +54,11 @@ export class Database {
                 break;
             case DatabaseType.absence:
                 result = await absenceDatabase.get(key).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.note:
+                result = await noteDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -86,6 +97,13 @@ export class Database {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
+            case DatabaseType.note:
+                result = await noteDatabase.allDocs({
+                    include_docs: true,
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
             case DatabaseType.homework:
                 result = await homeworkDatabase.allDocs({
                     include_docs: true,
@@ -119,6 +137,13 @@ export class Database {
             case DatabaseType.absence:
                 absenceDatabase.get(key).then(function (doc) {
                     absenceDatabase.remove(doc);
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.note:
+                noteDatabase.get(key).then(function (doc) {
+                    noteDatabase.remove(doc);
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
