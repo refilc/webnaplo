@@ -12,4 +12,6 @@
     color-scheme: light dark;
     color: #fff;
     background-color: #000;
+
+    scroll-behavior: smooth;
 }
