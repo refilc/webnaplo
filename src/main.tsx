@@ -21,7 +21,11 @@ const router = createBrowserRouter([
     // app/main routes
     {
         path: '/',
-        element: <MainLayout />,
+        element: <MainLayout currentPage='home'/>,
+    },
+    {
+        path: '/privacy-policy',
+        element: <MainLayout currentPage='privacy'/>,
     },
     {
         path: '/login',
@@ -76,6 +80,46 @@ const router = createBrowserRouter([
                     return redirect('https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS');
                 case 'cors-proxy':
                     return redirect('https://httptoolkit.com/blog/cors-proxies/');
+                default:
+                    return redirect('/');
+            }
+        },
+    },
+    // go social links
+    {
+        path: '/go/s/:platform',
+        loader: async ({ params }) => {
+            switch (params.platform) {
+                case 'tiktok':
+                    return redirect('https://www.tiktok.com/@refilc.hu');
+                case 'discord':
+                    return redirect('https://discord.com/invite/7d6cn3Yypz');
+                case 'instagram':
+                    return redirect('https://www.instagram.com/refilcapp/');
+                case 'github':
+                    return redirect('https://github.com/refilc?view_as=public');
+                case 'github-releases':
+                    return redirect('https://github.com/refilc/naplo/releases');
+                default:
+                    return redirect('/');
+            }
+        },
+    },
+    // normal social links
+    {
+        path: '/:platform',
+        loader: async ({ params }) => {
+            switch (params.platform) {
+                case 'tiktok':
+                    return redirect('https://www.tiktok.com/@refilc.hu');
+                case 'discord':
+                    return redirect('https://discord.com/invite/7d6cn3Yypz');
+                case 'instagram':
+                    return redirect('https://www.instagram.com/refilcapp/');
+                case 'github':
+                    return redirect('https://github.com/refilc?view_as=public');
+                case 'github-releases':
+                    return redirect('https://github.com/refilc/naplo/releases');
                 default:
                     return redirect('/');
             }
