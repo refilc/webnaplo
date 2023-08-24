@@ -16,12 +16,12 @@ const Footer = () => {
         <>
             <div className='flex items-center justify-center px-10 w-full h-max -skew-y-2 bg-black py-24'>
                 <div className='flex flex-row items-center justify-between px-10 w-full w-full h-max skew-y-2'>
-                    <div className='flex flex-col items-start justify-center gap-2'>
+                    <div className='flex flex-col items-center md:items-start justify-center gap-2'>
                         <div className='flex flex-row items-center justify-start gap-5'>
                             <img src={circleLogo} alt="logo" width={80} height={80}/>
-                            <h1 className='font-extrabold text-[75px]'>reFilc</h1>
+                            <h1 className='font-extrabold text-[50px] md:text-[75px]'>reFilc</h1>
                         </div>
-                        <h2 className='font-bold text-[30px] text-[#B7B7B7]'>
+                        <h2 className='font-bold text-[20px] md:text-[30px] text-[#B7B7B7] text-center md:text-left'>
                             Website design by 
                             <span className='underline ml-[10px]'> 
                                 <Link to={'https://liba.lol'} target='_blank'>liba</Link>

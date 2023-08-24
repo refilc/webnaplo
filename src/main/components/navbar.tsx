@@ -24,7 +24,7 @@ const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
                 </Link>
             </div>
             <div className="flex flex-row items-center justify-center w-max h-max gap-3">
-                <Link to={'/auth/login'} className="rounded-full">
+                <Link to={'/auth/login'} className="rounded-full hidden md:inline">
                     <div className="flex flex-row items-center justify-center py-[7px] px-4 rounded-full bg-refilc text-white">
                         <p className="text-[14px]">Bejelentkezés</p>
                     </div>
