@@ -9,16 +9,29 @@ import lockIcon from '/image/icon/lock.svg?url';
 import Footer from '../components/footer';
 
 const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, downloadRef: any }) => {
+    const [latestRelease, setLatestRelease] = useState<any>();
     const [latestVersion, setLatestVersion] = useState<any>('');
 
-    const fetchLatestVersion = async () => {
-        const res = await fetch('https://api.refilcapp.hu/v1/public/client/version/latest/name');
-        setLatestVersion((await res.text()).replace('-beta', ''));
+    const [latestGithubRelease, setLatestGithubRelease] = useState<any>();
+
+    const fetchLatestRelease = async () => {
+        const res = await fetch('https://api.refilc.hu/v1/public/client/version/latest');
+        const json = await res.json();
+        setLatestRelease(json);
+        setLatestVersion(json['version'].replace('-beta', ''));
+    }
+
+    const fetchLatestGithubRelease = async () => {
+        const res = await fetch('https://api.github.com/repos/refilc/naplo/releases/latest');
+        setLatestGithubRelease(await res.json());
     }
 
     useEffect(() => {
-        fetchLatestVersion();
-    }, []);    
+        fetchLatestRelease();
+        fetchLatestGithubRelease();
+    }, []);
+
+    latestRelease ? console.log(latestRelease) : '';
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-center">
@@ -88,25 +101,25 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                     <h2 className='font-bold text-[25px] mt-8'>Verzió: {latestVersion}</h2>
                     <div className='flex flex-col items-start justify-center gap-6 mt-6'>
                         <div className='flex flex-row items-center justify-start gap-14'>
-                            <Link to={'/go/dl/android'} className='rounded-full'>
+                            <Link to={latestRelease ? latestRelease['download_url']['android'] : ''} className='rounded-full'>
                                 <div className='flex flex-row items-center justify-center py-3 px-10 bg-[#3C5AF5] rounded-full min-w-[225px]'>
                                     <p className='text-[34px] font-bold'>Android</p>
                                 </div>
                             </Link>
                             <p className='font-light text-[15px]'>
-                                MD5: majd lesz pussy<br />
-                                Fájlméret: 69MB
+                                Letöltések: {latestGithubRelease ? latestGithubRelease['assets'][0]['download_count']: ''}<br />
+                                Fájlméret: {latestGithubRelease ? `${(latestGithubRelease['assets'][0]['size'] / 1048576).toFixed(2)}MB` : ''}
                             </p>
                         </div>
                         <div className='flex flex-row items-center justify-start gap-14'>
-                            <Link to={'/go/dl/ios'} className='rounded-full'>
+                            <Link to={latestRelease ? latestRelease['download_url']['ios']: ''} className='rounded-full'>
                                 <div className='flex flex-row items-center justify-center py-3 px-10 bg-[#3C5AF5] rounded-full min-w-[225px]'>
                                     <p className='text-[34px] font-bold'>iOS</p>
                                 </div>
                             </Link>
                             <p className='font-light text-[15px]'>
-                                MD5: majd lesz pussy<br />
-                                Fájlméret: 69MB
+                                Letöltések: {latestGithubRelease ? latestGithubRelease['assets'][1]['download_count']: ''} (.ipa)<br />
+                                Fájlméret: {latestGithubRelease ? `${(latestGithubRelease['assets'][1]['size'] / 1048576).toFixed(2)}MB` : ''}
                             </p>
                         </div>
                         <div className='flex flex-row items-center justify-start gap-14'>
@@ -116,13 +129,13 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 </div>
                             </Link>
                             <p className='font-light text-[15px]'>
-                                MD5: majd lesz pussy<br />
-                                Fájlméret: 69MB
+                                Letöltések: 0<br />
+                                Fájlméret: 0.00MB
                             </p>
                         </div>
                     </div>
                     <Link to={'/go/s/github-releases'} className='mt-6'>
-                        <p className='font-extralight text-[25px]'>régebbi verziók...</p>
+                        <p className='font-extralight text-[25px] hover:underline'>régebbi verziók...</p>
                     </Link>
                 </div>
             </div>
