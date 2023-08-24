@@ -80,7 +80,7 @@ export async function loginAPI(username: string, password: string, instituteCode
                     Settings.set('currentUser', userID);
 
                     // Get user data
-                    try {
+                    //try {
                         // fetch everythin cute from api
                         await GradeProvider.fetch();
                         await AbsenceProvider.fetch();
@@ -97,14 +97,15 @@ export async function loginAPI(username: string, password: string, instituteCode
                         //     Provider.of<EventProvider>(context, listen: false).fetch(),
                         //     Provider.of<AbsenceProvider>(context, listen: false).fetch(),
                         // ]);
-                    } catch (error) {
-                        console.warn(`[reFilc-API]: Failed to fetch user data: ${error}`);
-                    }
+                    //} catch (error) {
+                        //console.warn(`[reFilc-API]: Failed to fetch user data: ${error}`);
+                    //}
             
                     if (onSuccess != null) await onSuccess();
             
                     return LoginState.success;
                 } catch (error) {
+                    console.error(error);
                     console.error(`[reFilc-Auth]: loginApi: ${error}`);
                     // maybe check debug mode
                     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ERROR: $error")));
