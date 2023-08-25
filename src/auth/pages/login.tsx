@@ -1,18 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoginUser } from "../../models/user";
 import { LoginState, loginAPI } from "../../utils/api/login";
 import { useNavigate } from "react-router-dom";
-import { reFilcAPI } from "../../utils/api/client";
-import AsyncSelect from "react-select/async";
+import SchoolSelect from "../../app/components/school_select";
 
 const AuthLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [institute, setInstitute] = useState<any>();
     const [corsProxy, setCorsProxy] = useState('https://corsproxy.io/?');
-    const [schools, setSchools] = useState<any>();
-    const [schoolInputValue, setSchoolInputValue] = useState<any>();
-    const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -52,46 +48,7 @@ const AuthLogin = () => {
         alert('Böngésző kiegészítőt vagy bővítményt is használhatsz, ebben az esetben hagyd üresen a mezőt!');
     }
 
-    const getSchools = async () => {
-        reFilcAPI.getSchools().then((schools) => {
-            setSchools(schools);
-        });
-    }
-
-    const schoolOptions = schools ? schools.map((s: any) => {
-        return {
-            value: s['instituteCode'] ?? '',
-            label: s['name'] ?? 'Ismeretlen intézmény',
-        }
-    }) : [];
-
-    useEffect(() => {
-        getSchools();
-    }, []);
-
-    const filterSchools = (query: string) => {
-        if (query.replace(' ', '') == '') return [];
-        return schoolOptions.filter((o: any) =>
-            o.label.toLowerCase().includes(query.toLowerCase())
-        );
-    }
-    const loadSchoolOptions = (query: string, callback: (options: []) => void) => {
-        setSchoolInputValue(query);
-        setTimeout(() => {
-            callback(filterSchools(query));
-        }, 500);
-    }
-
-    const selectTheme = (theme: any) => ({
-        ...theme,
-        borderRadius: 10,
-        colors: {
-            ...theme.colors,
-            primary: 'transparent',
-            primary25: 'transparent',
-            primary50: 'transparent',
-        },
-    });
+    
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-5/6 gap-4">
@@ -114,32 +71,7 @@ const AuthLogin = () => {
                     <p className="text-[15px]">Intézmény</p>
                     <p className="opacity-50 text-[14px]">Iskola</p>
                 </div>
-                <AsyncSelect 
-                    cacheOptions={true}
-                    defaultOptions={true}
-                    loadOptions={loadSchoolOptions}
-                    onChange={
-                        (option: any) => {
-                            if (option) {
-                                setInstitute(option);
-                                setSchoolInputValue(option['name']);
-                            } else {
-                                setInstitute(null);
-                                setSchoolInputValue(null);
-                            }
-                        }
-                    }
-                    inputValue={schoolInputValue}
-                    placeholder={''}
-                    onMenuOpen={() => setIsSelectOpen(true)}
-                    onMenuClose={() => setIsSelectOpen(false)}
-                    className={
-                        'min-w-[300px] max-w-[300px] bg-white/[0.12] rounded-lg h-[38px] outline-none [&>div]:bg-transparent [&>div]:border-none [&>div]:outline-none [&>div]:shadow-none '
-                        + (isSelectOpen ? '[&>div:last-child]:bg-white/[0.12] [&>div:last-child]:backdrop-blur-2xl [&>div:last-child]:backdrop-brightness-[0.2]' : '')
-                    }
-                    theme={selectTheme}
-                    noOptionsMessage={() => 'Nincs találat...'}
-                />
+                <SchoolSelect setInstitute={setInstitute}/>
                 {/* <input type="text" value={instituteCode} onChange={(e) => setInstituteCode(e.target.value)} className="min-w-[300px] bg-white/[0.12] rounded-lg h-[35px] outline-none px-2"/> */}
             </div>
             <div className="flex flex-col items-start justify-center w-max h-max mt-5">
