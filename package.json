@@ -18,6 +18,7 @@
     "react-feather": "^2.0.10",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
+    "react-select": "^5.7.4",
     "tailwindcss-text-fill": "^0.2.0",
     "uuid": "^9.0.0"
   },
