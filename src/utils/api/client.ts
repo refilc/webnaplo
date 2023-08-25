@@ -17,7 +17,7 @@ export class reFilcAPI {
     static repo = "refilc/webnaplo";
     static releases = `https://api.github.com/repos/${this.repo}/releases`;        
 
-    async getSchools() {
+    static async getSchools() {
         try {
             const res: Response = await fetch(reFilcAPI.schoolList, {
                 method: 'GET',
