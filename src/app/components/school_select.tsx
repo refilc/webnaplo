@@ -74,6 +74,7 @@ const SchoolSelect = ({ setInstitute }: { setInstitute: any }) => {
             }
             theme={selectTheme}
             noOptionsMessage={() => 'Nincs találat...'}
+            loadingMessage={() => 'Betöltés...'}
         />
     );
 }
