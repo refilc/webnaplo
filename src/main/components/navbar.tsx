@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IconContext } from "react-icons";
-import { FaDiscord, FaInstagram, FaTiktok } from "react-icons/fa6";
+import { FaDiscord, FaGithub, FaInstagram, FaTiktok } from "react-icons/fa6";
 import * as Icon from "react-feather";
 
 const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
@@ -9,6 +9,11 @@ const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
     return(
         <div className="top-0 left-0 right-0 w-full flex flex-row items-center justify-between px-4 pt-4 z-50">
             <div className="flex flex-row items-center justify-center w-max h-max gap-3">
+                <Link to={'/go/s/github'} target="_blank">
+                    <IconContext.Provider value={{ color: "white", size: "27" }}>
+                        <FaGithub />
+                    </IconContext.Provider>
+                </Link>
                 <Link to={'/go/s/tiktok'} target="_blank">
                     <IconContext.Provider value={{ color: "white", size: "25" }}>
                         <FaTiktok />
@@ -24,6 +29,7 @@ const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
                         <FaInstagram />
                     </IconContext.Provider>
                 </Link>
+                
             </div>
             <div className="flex flex-row items-center justify-center w-max h-max gap-3">
                 <Link to={'/auth/login'} className="rounded-full hidden md:inline">
