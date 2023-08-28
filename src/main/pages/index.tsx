@@ -131,7 +131,7 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 Fájlméret: {latestGithubRelease ? `${(latestGithubRelease['assets'][1]['size'] / 1048576).toFixed(2)}MB` : ''}
                             </p>
                         </div>
-                        <div className='hidden md:flex flex-row items-center justify-start gap-6 md:gap-14'>
+                        {/* <div className='hidden md:flex flex-row items-center justify-start gap-6 md:gap-14'>
                             <Link to={'/download/desktop'} className='rounded-full'>
                                 <div className='flex flex-row items-center justify-center py-3 px-5 md:px-10 bg-[#3C5AF5] rounded-full min-w-[142px] md:min-w-[225px]'>
                                     <p className='text-[24px] md:text-[34px] font-bold'>Asztali</p>
@@ -141,7 +141,7 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 Letöltések: 0<br />
                                 Fájlméret: 0.00MB
                             </p>
-                        </div>
+                        </div> */}
                     </div>
                     <Link to={'/go/s/github-releases'} className='mt-6'>
                         <p className='font-extralight text-[25px] hover:underline'>összes verzió...</p>
