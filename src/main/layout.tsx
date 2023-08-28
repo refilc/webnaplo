@@ -6,7 +6,13 @@ import PrivacyPolicy from "./pages/privacy";
 const MainLayout = ({ currentPage }: { currentPage: string }) => {
     const downloadRef = useRef<null | HTMLDivElement>(null);
     const scrollToDownload = () => {
-        downloadRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (currentPage == 'home') {
+            downloadRef.current?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            setTimeout(() => {
+                downloadRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
     }
 
     return (

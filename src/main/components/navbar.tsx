@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IconContext } from "react-icons";
 import { FaDiscord, FaInstagram, FaTiktok } from "react-icons/fa6";
 import * as Icon from "react-feather";
 
 const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
+    const location = useLocation();
+
     return(
         <div className="top-0 left-0 right-0 w-full flex flex-row items-center justify-between px-4 pt-4 z-50">
             <div className="flex flex-row items-center justify-center w-max h-max gap-3">
@@ -29,7 +31,7 @@ const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
                         <p className="text-[14px]">Bejelentkezés</p>
                     </div>
                 </Link>
-                <Link to={''} onClick={scrollToDownload} className="rounded-full">
+                <Link to={location.pathname == '/' ? '' : '/'} onClick={scrollToDownload} className="rounded-full">
                     <div className="flex flex-row items-center justify-center p-[7px] rounded-full bg-refilc text-white">
                         <Icon.Download size={21} />
                     </div>
