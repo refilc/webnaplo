@@ -1,5 +1,5 @@
 import AsyncSelect from "react-select/async";
-import { reFilcAPI } from "../../utils/api/client";
+import { reFilcAPI } from "../../../utils/api/client";
 import { useEffect, useState } from "react";
 
 const SchoolSelect = ({ setInstitute }: { setInstitute: any }) => {

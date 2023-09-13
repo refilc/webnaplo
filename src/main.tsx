@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './main.css'
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
-import MainLayout from './main/layout.tsx';
-import ErrorLayout from './error/layout.tsx';
+import MainLayout from './ui/main/layout.tsx';
+import ErrorLayout from './ui/error/layout.tsx';
 // import AppLayout from './app/layout.tsx';
 // import AuthLayout from './auth/layout.tsx';
 // import { Settings } from "./utils/settings.ts";

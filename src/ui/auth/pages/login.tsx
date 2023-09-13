@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { LoginUser } from "../../models/user";
-import { LoginState, loginAPI } from "../../utils/api/login";
+import { LoginUser } from "../../../models/user";
+import { LoginState, loginAPI } from "../../../utils/api/login";
 import { useNavigate } from "react-router-dom";
 import SchoolSelect from "../../app/components/school_select";
 
