@@ -4,6 +4,7 @@ import './main.css'
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import MainLayout from './ui/main/layout.tsx';
 import ErrorLayout from './ui/error/layout.tsx';
+import TimelineLayout from './ui/timeline/layout.tsx';
 // import AppLayout from './app/layout.tsx';
 // import AuthLayout from './auth/layout.tsx';
 // import { Settings } from "./utils/settings.ts";
@@ -72,6 +73,11 @@ const router = createBrowserRouter([
     //         return null;
     //     },
     // },
+    // timeline links
+    {
+        path: '/timeline',
+        element: <TimelineLayout currentPage={'home'} />
+    },
     // go quick links
     {
         path: '/go/:link',

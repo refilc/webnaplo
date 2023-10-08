@@ -116,8 +116,8 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 </div>
                             </Link>
                             <p className='font-light text-[15px]'>
-                                Letöltések: {latestGithubRelease ? latestGithubRelease['assets'][0]['download_count']: ''}<br />
-                                Fájlméret: {latestGithubRelease ? `${(latestGithubRelease['assets'][0]['size'] / 1048576).toFixed(2)}MB` : ''}
+                                Letöltések: {latestGithubRelease ? (latestGithubRelease['assets'][0] ? latestGithubRelease['assets'][0]['download_count'] : '0' ) : '0'}<br />
+                                Fájlméret: {latestGithubRelease ? (latestGithubRelease['assets'][0] ? `${(latestGithubRelease['assets'][0]['size'] / 1048576).toFixed(2)}MB` : '0MB') : '0MB'}
                             </p>
                         </div>
                         <div className='flex flex-row items-center justify-start gap-6 md:gap-14'>
@@ -127,10 +127,11 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 </div>
                             </Link>
                             <p className='font-light text-[15px]'>
-                                Letöltések: {latestGithubRelease ? latestGithubRelease['assets'][1]['download_count']: ''} (.ipa)<br />
-                                Fájlméret: {latestGithubRelease ? `${(latestGithubRelease['assets'][1]['size'] / 1048576).toFixed(2)}MB` : ''}
+                                Letöltések: {latestGithubRelease ? (latestGithubRelease['assets'][1] ? latestGithubRelease['assets'][1]['download_count'] : '0') : '0'} (.ipa)<br />
+                                Fájlméret: {latestGithubRelease ?  (latestGithubRelease['assets'][1] ? `${(latestGithubRelease['assets'][1]['size'] / 1048576).toFixed(2)}MB` : '0MB') : '0MB'}
                             </p>
                         </div>
+                        
                         {/* <div className='hidden md:flex flex-row items-center justify-start gap-6 md:gap-14'>
                             <Link to={'/download/desktop'} className='rounded-full'>
                                 <div className='flex flex-row items-center justify-center py-3 px-5 md:px-10 bg-[#3C5AF5] rounded-full min-w-[142px] md:min-w-[225px]'>
