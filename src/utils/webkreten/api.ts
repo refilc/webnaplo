@@ -45,7 +45,7 @@ class KretaAdminEndpoints {
     }
     static trashMessage = "/api/v1/kommunikacio/postaladaelemek/kuka";
     static deleteMessage = "/api/v1/kommunikacio/postaladaelemek/torles";
-  }
+}
 
 export class KretaAPI {
     // IDP API

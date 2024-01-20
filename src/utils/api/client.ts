@@ -17,7 +17,7 @@ export class reFilcAPI {
     static repo = "refilc/webnaplo";
     static releases = `https://api.github.com/repos/${this.repo}/releases`;        
 
-    async getSchools() {
+    static async getSchools() {
         try {
             const res: Response = await fetch(reFilcAPI.schoolList, {
                 method: 'GET',
@@ -30,7 +30,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.getSchools: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.getSchools: ${error}`);
         }
         return null;
     }
@@ -61,7 +61,7 @@ export class reFilcAPI {
             }
             throw `HTTP ${res.status}: ${res.body}`;
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.getConfig: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.getConfig: ${error}`);
         }
         return null;
     }
@@ -76,7 +76,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.getNews: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.getNews: ${error}`);
         }
         return null;
     }
@@ -91,7 +91,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.getSupporters: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.getSupporters: ${error}`);
         }
         return null;
     }
@@ -106,7 +106,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.getReleases: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.getReleases: ${error}`);
         }
         return null;
     }
@@ -128,7 +128,7 @@ export class reFilcAPI {
                 throw `HTTP ${res.status}: ${res.body}`;
             }
         } catch (error) {
-            console.error(`[reFilc-API]: FilcAPI.sendReport: ${error}`);
+            console.error(`[reFilc-API]: reFilcAPI.sendReport: ${error}`);
         }
     }
 }

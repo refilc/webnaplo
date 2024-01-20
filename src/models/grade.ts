@@ -62,7 +62,7 @@ export class Grade {
                 json['SulySzazalekErteke'] ?? 0,
             ),
             (json['ErtekeloTanarNeve'] ?? '').trim(),
-            json['Tema'].replace(/^./, json['Tema'].charAt(0).toUpperCase()) ?? '',
+            json['Tema'] ? json['Tema'].replace(/^./, json['Tema'].charAt(0).toUpperCase()) : '',
             json['Tipus']['Nev'] ?? '',
             json['OsztalyCsoport'] ? json['OsztalyCsoport']['Uid'] ?? '' : '',
             Subject.fromKretaJSON(json['Tantargy'] ?? {}),
