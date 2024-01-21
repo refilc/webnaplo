@@ -5,6 +5,7 @@ const gradeDatabase = new PouchDB('grades');
 const absenceDatabase = new PouchDB('absences');
 const noteDatabase = new PouchDB('notes');
 const homeworkDatabase = new PouchDB('homeworks');
+const adminUserDatabase = new PouchDB('adminUsers');
 
 export class Database {
     static store = (type: DatabaseType, doc: any) => {
@@ -31,6 +32,11 @@ export class Database {
                 break;
             case DatabaseType.homework:
                 homeworkDatabase.put(doc).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.adminUser:
+                adminUserDatabase.put(doc).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -64,6 +70,11 @@ export class Database {
                 break;
             case DatabaseType.homework:
                 result = await homeworkDatabase.get(key).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.adminUser:
+                result = await adminUserDatabase.get(key).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
@@ -106,6 +117,13 @@ export class Database {
                 break;
             case DatabaseType.homework:
                 result = await homeworkDatabase.allDocs({
+                    include_docs: true,
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
+            case DatabaseType.adminUser:
+                result = await adminUserDatabase.allDocs({
                     include_docs: true,
                 }).catch(function (err) {
                     console.log(`[reFilc-DB]: ${err}`);
@@ -154,6 +172,13 @@ export class Database {
                     console.log(`[reFilc-DB]: ${err}`);
                 });
                 break;
+            case DatabaseType.adminUser:
+                adminUserDatabase.get(key).then(function (doc) {
+                    adminUserDatabase.remove(doc);
+                }).catch(function (err) {
+                    console.log(`[reFilc-DB]: ${err}`);
+                });
+                break;
             default:
                 console.log(`[reFilc-DB]: Unknown type "${type}"`);
         }
@@ -161,9 +186,12 @@ export class Database {
 }
 
 export enum DatabaseType {
+    // default
     user,
     grade,
     absence,
     note,
     homework,
+    // admin
+    adminUser,
 }

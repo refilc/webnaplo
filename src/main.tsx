@@ -5,6 +5,9 @@ import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom'
 import MainLayout from './ui/main/layout.tsx';
 import ErrorLayout from './ui/error/layout.tsx';
 import TimelineLayout from './ui/timeline/layout.tsx';
+import AdminLayout from './ui/admin/layout.tsx';
+import { AdminUser } from './models/adminuser.ts';
+import { AdminUserDB } from './utils/db/adminuser.ts';
 // import AppLayout from './app/layout.tsx';
 // import AuthLayout from './auth/layout.tsx';
 // import { Settings } from "./utils/settings.ts";
@@ -18,6 +21,14 @@ import TimelineLayout from './ui/timeline/layout.tsx';
 //     if (!user) return null;
 //     return user;
 // }
+
+const adminAuthedUser = async (): Promise<AdminUser | null> => {
+    const userID = window.localStorage.getItem('admin_uid') ?? '';
+    const user = await AdminUserDB.getUser(userID);
+    console.log(userID + ' ' + user?.id + ' ' + user);
+    if (!user) return null;
+    return user;
+}
 
 const router = createBrowserRouter([
     // app/main routes
@@ -78,6 +89,24 @@ const router = createBrowserRouter([
         path: '/timeline',
         element: <TimelineLayout currentPage={'home'} />
     },
+    // admin links
+    {
+            path: '/admin/:page',
+            element: <AdminLayout />,
+            loader: async ({ params }) => {
+                const user = await adminAuthedUser();
+                if (user && params.page == 'logout') {
+                    AdminUserDB.deleteUser(user.id);
+                    window.localStorage.clear();
+                } else if (user) {
+                    return redirect('/admin/home');
+                }
+                if (params.page == 'logout') {
+                    return redirect('/');
+                }
+                return null;
+            },
+        },
     // go quick links
     {
         path: '/go/:link',
