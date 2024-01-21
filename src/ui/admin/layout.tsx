@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
-import AuthLogin from './pages/login';
+import AdminLogin from './pages/login';
 import NavBar from './components/navbar';
+import AdminHome from './pages/home';
 
 const AdminLayout = () => {
     const params = useParams();
@@ -10,7 +11,7 @@ const AdminLayout = () => {
         <div className='select-none h-screen'>
             <NavBar />
             {
-                currentPage == 'login' ? <AuthLogin /> : ''
+                currentPage == 'login' ? <AdminLogin /> : <AdminHome />
             }
         </div>
     )

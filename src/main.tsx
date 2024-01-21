@@ -6,8 +6,8 @@ import MainLayout from './ui/main/layout.tsx';
 import ErrorLayout from './ui/error/layout.tsx';
 import TimelineLayout from './ui/timeline/layout.tsx';
 import AdminLayout from './ui/admin/layout.tsx';
-import { AdminUser } from './models/adminuser.ts';
-import { AdminUserDB } from './utils/db/adminuser.ts';
+// import { AdminUser } from './models/adminuser.ts';
+// import { AdminUserDB } from './utils/db/adminuser.ts';
 // import AppLayout from './app/layout.tsx';
 // import AuthLayout from './auth/layout.tsx';
 // import { Settings } from "./utils/settings.ts";
@@ -22,12 +22,17 @@ import { AdminUserDB } from './utils/db/adminuser.ts';
 //     return user;
 // }
 
-const adminAuthedUser = async (): Promise<AdminUser | null> => {
+const adminAuthedUser = async (): Promise<string | null> => {
     const userID = window.localStorage.getItem('admin_uid') ?? '';
-    const user = await AdminUserDB.getUser(userID);
-    console.log(userID + ' ' + user?.id + ' ' + user);
-    if (!user) return null;
-    return user;
+    const accessToken = window.localStorage.getItem('admin_token') ?? '';
+    // const user = await AdminUserDB.getUser(userID);
+    // console.log(userID + ' ' + user?.id + ' ' + user);
+    // if (!user) return null;
+    // return user;
+    if (userID != '' && accessToken != '') {
+        return userID;
+    }
+    return null;
 }
 
 const router = createBrowserRouter([
@@ -91,18 +96,27 @@ const router = createBrowserRouter([
     },
     // admin links
     {
+        path: '/admin',
+        loader: () => {
+            return redirect('/admin/login');
+        },
+    },
+    {
             path: '/admin/:page',
             element: <AdminLayout />,
             loader: async ({ params }) => {
-                const user = await adminAuthedUser();
-                if (user && params.page == 'logout') {
-                    AdminUserDB.deleteUser(user.id);
+                const userID = await adminAuthedUser();
+                if (userID != null && params.page == 'logout') {
+                    // AdminUserDB.deleteUser(userID);
                     window.localStorage.clear();
-                } else if (user) {
+                } else if (userID != null && params.page != 'home') {
                     return redirect('/admin/home');
                 }
                 if (params.page == 'logout') {
                     return redirect('/');
+                }
+                if (userID == null && params.page != 'login') {
+                    return redirect('/admin/login');
                 }
                 return null;
             },
