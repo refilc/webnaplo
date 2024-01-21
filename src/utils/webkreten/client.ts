@@ -28,7 +28,7 @@ export class KretaClient {
                     if (!headers['user-agent'] && this.userAgent) headers['user-agent'] = this.userAgent;
                 }
 
-                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + encodeURIComponent(url));
+                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + url);
             
                 res = await fetch(finalUrl, {
                     method: 'GET',
@@ -74,7 +74,7 @@ export class KretaClient {
                     if (!headers['content-type']) headers['content-type'] = 'application/json';
                 }
 
-                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + encodeURIComponent(url));
+                const finalUrl = UserSettings.corsProxy == '' ? url : (UserSettings.corsProxy + url);
             
                 res = await fetch(finalUrl, {
                     method: 'POST',

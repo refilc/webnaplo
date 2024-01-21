@@ -6,6 +6,11 @@ import MainLayout from './ui/main/layout.tsx';
 import ErrorLayout from './ui/error/layout.tsx';
 import TimelineLayout from './ui/timeline/layout.tsx';
 import AdminLayout from './ui/admin/layout.tsx';
+import AppLayout from './ui/app/layout.tsx';
+import { UserDB } from './utils/db/user.ts';
+import AuthLayout from './ui/auth/layout.tsx';
+import { LoginUser } from './models/user.ts';
+import { Settings } from './utils/settings.ts';
 // import { AdminUser } from './models/adminuser.ts';
 // import { AdminUserDB } from './utils/db/adminuser.ts';
 // import AppLayout from './app/layout.tsx';
@@ -14,13 +19,13 @@ import AdminLayout from './ui/admin/layout.tsx';
 // import { UserDB } from './utils/db/user.ts';
 // import { LoginUser } from './models/user.ts';
 
-// const authedUser = async (): Promise<LoginUser | null> => {
-//     const userID = Settings.get('currentUser');
-//     const user = await UserDB.getUser(userID);
-//     console.log(userID + ' ' + user?.id + ' ' + user);
-//     if (!user) return null;
-//     return user;
-// }
+const authedUser = async (): Promise<LoginUser | null> => {
+    const userID = Settings.get('currentUser');
+    const user = await UserDB.getUser(userID);
+    console.log(userID + ' ' + user?.id + ' ' + user);
+    if (!user) return null;
+    return user;
+}
 
 const adminAuthedUser = async (): Promise<string | null> => {
     const userID = window.localStorage.getItem('admin_uid') ?? '';
@@ -51,44 +56,44 @@ const router = createBrowserRouter([
             return redirect('/auth/login');
         },
     },
-    // {
-    //     path: '/app',
-    //     loader: () => {
-    //         return redirect('/auth/login');
-    //     },
-    // },
-    // {
-    //     path: '/auth',
-    //     loader: () => {
-    //         return redirect('/auth/login');
-    //     },
-    // },
-    // {
-    //     path: '/app/:page',
-    //     element: <AppLayout />,
-    //     loader: async () => {
-    //         const user = await authedUser();
-    //         if(!user) return redirect('/auth/login');
-    //         return user;
-    //     },
-    // },
-    // {
-    //     path: '/auth/:page',
-    //     element: <AuthLayout />,
-    //     loader: async ({ params }) => {
-    //         const user = await authedUser();
-    //         if (user && params.page == 'logout') {
-    //             UserDB.deleteUser(user.id);
-    //             window.localStorage.clear();
-    //         } else if (user) {
-    //             return redirect('/app/home');
-    //         }
-    //         if (params.page == 'logout') {
-    //             return redirect('/');
-    //         }
-    //         return null;
-    //     },
-    // },
+    {
+        path: '/app',
+        loader: () => {
+            return redirect('/auth/login');
+        },
+    },
+    {
+        path: '/auth',
+        loader: () => {
+            return redirect('/auth/login');
+        },
+    },
+    {
+        path: '/app/:page',
+        element: <AppLayout />,
+        loader: async () => {
+            const user = await authedUser();
+            if(!user) return redirect('/auth/login');
+            return user;
+        },
+    },
+    {
+        path: '/auth/:page',
+        element: <AuthLayout />,
+        loader: async ({ params }) => {
+            const user = await authedUser();
+            if (user && params.page == 'logout') {
+                UserDB.deleteUser(user.id);
+                window.localStorage.clear();
+            } else if (user) {
+                return redirect('/app/home');
+            }
+            if (params.page == 'logout') {
+                return redirect('/');
+            }
+            return null;
+        },
+    },
     // timeline links
     {
         path: '/timeline',
