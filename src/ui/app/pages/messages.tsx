@@ -1,7 +1,7 @@
 const AppMessages = () => {
     return (
         <div>
-            app messages
+            Messages page is coming soon..
         </div>
     )
 }

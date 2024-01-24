@@ -33,6 +33,7 @@ export async function adminLoginAPI(username: string, password: string, onLogin?
                     // AdminUserDB.addUser(user);
                     window.localStorage.setItem('admin_token', user.accessToken);
                     window.localStorage.setItem('admin_uid', userID);
+                    window.localStorage.setItem('admin_login_user', username);
             
                     if (onSuccess != null) await onSuccess();
             

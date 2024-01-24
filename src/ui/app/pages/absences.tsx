@@ -1,7 +1,7 @@
 const AppAbsences = () => {
     return (
         <div>
-            app absences
+            Absences page is coming soon..
         </div>
     )
 }

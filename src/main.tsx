@@ -81,6 +81,11 @@ const router = createBrowserRouter([
         path: '/auth/:page',
         element: <AuthLayout />,
         loader: async ({ params }) => {
+            // temp admin check
+            const userID = await adminAuthedUser();
+            if (userID == null) return redirect('/');
+
+            // auth redir things
             const user = await authedUser();
             if (user && params.page == 'logout') {
                 UserDB.deleteUser(user.id);

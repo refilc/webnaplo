@@ -7,9 +7,11 @@ const AdminLayout = () => {
     const params = useParams();
     const currentPage = params.page;
 
+    const loginUser = window.localStorage.getItem('admin_login_user');
+
     return (
         <div className='select-none h-screen'>
-            <NavBar />
+            <NavBar showLoginText={currentPage == 'login'} loginUser={loginUser ?? 'Ismeretlen'} />
             {
                 currentPage == 'login' ? <AdminLogin /> : <AdminHome />
             }

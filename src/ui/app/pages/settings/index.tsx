@@ -1,6 +1,6 @@
 const AppSettingsIndex = () => {
     return (
-        <div>beallitasok</div>
+        <div>Settings page is coming soon..</div>
     );
 }
 

@@ -4,10 +4,12 @@ import { GradeDB } from "../../../utils/db/grade";
 import Tile from "../components/tile";
 import TileCard from "../components/tilecard";
 import { Subject } from "../../../models/subject";
+import { averageEvals } from "../../../utils/avg_calc";
 
 const AppGrades = () => {
     const [subjects, setSubjects] = useState<Subject[]>();
     const [gradesCount, setGradesCount] = useState<number[]>();
+    const [averages, setAverages] = useState<{ [key: string]: string }>();
 
     // GradeProvider.fetch();
     //AbsenceProvider.fetch();
@@ -51,9 +53,36 @@ const AppGrades = () => {
             }
         });
 
+        // get subject grades
+        const now = new Date();
+
+        function getSubjectGrades(subject: Subject, days: number) {
+            grades.forEach((g) => {console.log(g.type)});
+
+            const res = (grades.filter((e) =>
+                e.subject.id == subject.id && e.type == "evkozi_jegy_ertekeles" &&
+                    (days ==  0 || e.date.getDay() < now.getDay())));
+
+            console.log(res);
+
+            return res;
+        }
+
+        const averages: { [key: string]: string } = {};
+
+        subjects.forEach((s) => {
+            const gr = getSubjectGrades(s, 0);
+            const avg: string = averageEvals(gr);
+
+            console.log(avg);
+
+            averages[s.id] = avg;
+        });
+
         // set variables
         setSubjects(subjects);
         setGradesCount(gradesLen);
+        setAverages(averages);
     }
 
     useEffect(() => {
@@ -128,8 +157,8 @@ const AppGrades = () => {
                             {
                                 subjects ? subjects.map((subject: Subject) => {
                                     return (
-                                        <Tile key={subject.id} title={subject.name} leading={null} description="" trailing={
-                                            <div className={' text-[30px] font-bold'}>{}</div>
+                                        <Tile key={subject.id} title={subject.name.slice(0, 25).length < subject.name.length ? subject.name.slice(0, 25) + '...' : subject.name} leading={null} description="" trailing={
+                                            <div className={'text-grade-' + (averages ? averages[subject.id].charAt(0) : '1') + ' text-[25px] font-bold pl-3'}>{averages ? averages[subject.id] : ''}</div>
                                         } className="px-4" />
                                     )
                                 }) : <p>Betöltés...</p>

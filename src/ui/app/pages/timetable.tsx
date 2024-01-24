@@ -1,7 +1,7 @@
 const AppTimetable = () => {
     return (
         <div>
-            app timetable
+            Timetable page is coming soon..
         </div>
     )
 }
