@@ -8,7 +8,7 @@ import TimelineLayout from './ui/timeline/layout.tsx';
 import AdminLayout from './ui/admin/layout.tsx';
 import AppLayout from './ui/app/layout.tsx';
 import { UserDB } from './utils/db/user.ts';
-import AuthLayout from './ui/auth/layout.tsx';
+// import AuthLayout from './ui/auth/layout.tsx';
 import { LoginUser } from './models/user.ts';
 import { Settings } from './utils/settings.ts';
 // import { AdminUser } from './models/adminuser.ts';
@@ -77,28 +77,30 @@ const router = createBrowserRouter([
             return user;
         },
     },
-    {
-        path: '/auth/:page',
-        element: <AuthLayout />,
-        loader: async ({ params }) => {
-            // temp admin check
-            const userID = await adminAuthedUser();
-            if (userID == null) return redirect('/');
+    // {
+    //     path: '/auth/:page',
+    //     element: <AuthLayout />,
+    //     loader: async ({ params }) => {
 
-            // auth redir things
-            const user = await authedUser();
-            if (user && params.page == 'logout') {
-                UserDB.deleteUser(user.id);
-                window.localStorage.clear();
-            } else if (user) {
-                return redirect('/app/home');
-            }
-            if (params.page == 'logout') {
-                return redirect('/');
-            }
-            return null;
-        },
-    },
+
+    //         // temp admin check
+    //         const userID = await adminAuthedUser();
+    //         if (userID == null) return redirect('/');
+
+    //         // auth redir things
+    //         const user = await authedUser();
+    //         if (user && params.page == 'logout') {
+    //             UserDB.deleteUser(user.id);
+    //             window.localStorage.clear();
+    //         } else if (user) {
+    //             return redirect('/app/home');
+    //         }
+    //         if (params.page == 'logout') {
+    //             return redirect('/');
+    //         }
+    //         return null;
+    //     },
+    // },
     // timeline links
     {
         path: '/timeline',
