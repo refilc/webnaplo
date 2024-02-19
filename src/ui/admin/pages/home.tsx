@@ -8,6 +8,8 @@ const AdminHome = () => {
 
     const [qrScanCount, setQrScanCount] = useState('');
 
+    const [authToken, setAuthToken] = useState('');
+
     const loadData = async () => {
         console.log('Loading data from reFilc API..');
 
@@ -36,6 +38,8 @@ const AdminHome = () => {
         setAndroidInstallCount(androidInstalls);
         
         setQrScanCount(scanCount);
+
+        setAuthToken(accessToken);
     }
 
     useEffect(() => {
@@ -54,11 +58,12 @@ const AdminHome = () => {
             </div>
             <div className="flex flex-col items-start justify-start p-10">
                 <h1 className="text-[30px] mb-2">QR kód beolvasások száma</h1>
-                <div className="ml-2 text-[18px]">
+                <form className="ml-2 text-[18px]" method="get" action="https://api.refilc.hu/v2/admin/data/qr-scan-count" target="_blank">
                     <p className="mb-2">- Összes: <b>{qrScanCount}</b></p>
-                    {/* <p>- iOS: <b>{iosInstallCount}</b></p>
-                    <p>- Android: <b>{androidInstallCount}</b></p> */}
-                </div>
+                    <p>- ID alapján: <b><input type="text" name="qr_code_id" id="qr_code_id" placeholder="(rf01)" className="outline-none bg-transparent" /></b></p>
+                    <input type="hidden" name="token" value={authToken} />
+                    {/* <p>- Android: <b>{androidInstallCount}</b></p> */}
+                </form>
             </div>
             {/* <h1 className="text-white">reFilc össz telepítések száma: {installCount}</h1> */}
         </div>
