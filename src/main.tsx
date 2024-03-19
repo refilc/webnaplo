@@ -11,6 +11,7 @@ import { UserDB } from './utils/db/user.ts';
 // import AuthLayout from './ui/auth/layout.tsx';
 import { LoginUser } from './models/user.ts';
 import { Settings } from './utils/settings.ts';
+import NewMainLayout from './ui/main_new/layout.tsx';
 // import { AdminUser } from './models/adminuser.ts';
 // import { AdminUserDB } from './utils/db/adminuser.ts';
 // import AppLayout from './app/layout.tsx';
@@ -41,6 +42,11 @@ const adminAuthedUser = async (): Promise<string | null> => {
 }
 
 const router = createBrowserRouter([
+    // temp
+    {
+        path: '/v5',
+        element: <NewMainLayout currentPage='home' />,
+    },
     // app/main routes
     {
         path: '/',

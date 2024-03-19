@@ -21,6 +21,9 @@ export default {
         'grade-3': '#833df4',
         'grade-2': '#ae3df4',
         'grade-1': '#f43dab',
+        // new colors
+        'v5_txt': '#0A1C41',
+        'v5_btn': '#0E275A',
       }
     },
   },
