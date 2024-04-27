@@ -52,7 +52,7 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                 <div className='flex flex-col items-center justify-center gap-3 drop-shadow-[0_0_100px_rgba(27,58,117,0.5)]'>
                     <img src={fullLogo} alt="iphone mockup" width={400}/>
                     <p className='font-bold text-[26px] md:text-[34px] text-center'>
-                        <Countdown date={Date.UTC(2024, 3, 28, 8, 0, 0, 0)} >
+                        <Countdown date={Date.UTC(2024, 4, 5, 17, 55, 0, 0)} >
                             <div className="flex flex-col items-center justify-center">
                                 <span className="text-[22px]">Frissítsd az oldalt! 👀</span>
                             </div>
