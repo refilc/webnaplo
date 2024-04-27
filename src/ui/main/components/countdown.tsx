@@ -19,7 +19,7 @@ const CountdownModal = ({ setTimerVisible }: { setTimerVisible: any }) => {
                     </button>
                 </div>
                 <div className="flex flex-col items-center justify-center w-full h-[77%]">
-                    <p className="text-[69px] tracking-widest">
+                    <p className="text-[40px] md:text-[69px] tracking-widest">
                         <Countdown date={Date.UTC(2024, 4, 5, 15, 55, 0, 0)} >
                             <div className="flex flex-col items-center justify-center">
                                 <span className="text-[40px]">Már csak néhány másodperc! 👀</span><br />
