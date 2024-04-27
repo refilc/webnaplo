@@ -7,7 +7,7 @@ const NavBar = ({ scrollToDownload }: { scrollToDownload: any }) => {
     const location = useLocation();
 
     return(
-        <div className="top-0 left-0 right-0 w-full flex flex-row items-center justify-between px-4 pt-4 z-50">
+        <div className="top-0 left-0 right-0 w-full flex flex-row items-center justify-between px-4 pt-4 z-40">
             <div className="flex flex-row items-center justify-center w-max h-max gap-3">
                 <Link to={'/go/s/github'} target="_blank">
                     <IconContext.Provider value={{ color: "white", size: "27" }}>

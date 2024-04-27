@@ -17,7 +17,7 @@ const NewMainIndex = () => {
                     A reFilc folytatja, amit a Filc Napló és a Szivacs Napló elkezdett: egy<br /> diákoknak készült e-KRÉTA kliens, ami szép és hasznos is.
                 </p>
                 <Link to={'/download'}>
-                    <div className="mt-[32px] flex h-[34px] p-[12px] justify-center items-center gap-[10px] rounded-[22px] bg-v5_btn">
+                    <div className="mt-[32px] flex h-[34px] p-[16px] h-[40px] justify-center items-center gap-[10px] rounded-[22px] bg-v5_btn">
                         <p className="text-[16px] font-medium leading-normal">Letöltés</p>
                     </div>
                 </Link>

@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavBar from "./components/navbar";
 import MainIndex from "./pages";
 import PrivacyPolicy from "./pages/privacy";
+import CountdownModal from "./components/countdown";
 
 const MainLayout = ({ currentPage }: { currentPage: string }) => {
     const downloadRef = useRef<null | HTMLDivElement>(null);
@@ -15,8 +16,15 @@ const MainLayout = ({ currentPage }: { currentPage: string }) => {
         }
     }
 
+    const [timerVisible, setTimerVisible] = useState<boolean>(true);
+
+    useEffect(() => {
+        setTimerVisible(true);
+    }, []);
+
     return (
         <div className="select-none flex flex-col w-full h-full bg-[#0F131D]">
+            {timerVisible && <CountdownModal setTimerVisible={setTimerVisible} />}
             <NavBar scrollToDownload={scrollToDownload} />
             {
                 currentPage == 'home' ? <MainIndex scrollToDownload={scrollToDownload} downloadRef={downloadRef} /> : 
