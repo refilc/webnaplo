@@ -32,7 +32,7 @@ const ParticlesBackground = () => {
         return (
             <Particles
                 id="tsparticles"
-                url="http://127.0.0.1:5173/json/particles.json"
+                url="https://refilc.hu/json/particles.json"
                 particlesLoaded={particlesLoaded}
             />
         );
