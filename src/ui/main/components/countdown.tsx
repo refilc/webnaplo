@@ -3,8 +3,13 @@ import { IconContext } from "react-icons";
 import { FaX } from "react-icons/fa6";
 import Countdown from 'react-countdown';
 import ParticlesBackground from "./particles";
+import { useEffect } from "react";
 
 const CountdownModal = ({ setTimerVisible }: { setTimerVisible: any }) => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     useLockBodyScroll();
 
     return(
