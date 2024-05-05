@@ -7,7 +7,7 @@ import premFeature1 from '/image/premium_1.png?url';
 import premFeature2 from '/image/premium_2.png?url';
 import lockIcon from '/image/icon/lock.svg?url';
 import Footer from '../components/footer';
-import Countdown from 'react-countdown';
+// import Countdown from 'react-countdown';
 
 const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, downloadRef: any }) => {
     const [latestRelease, setLatestRelease] = useState<any>();
@@ -52,11 +52,12 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                 <div className='flex flex-col items-center justify-center gap-3 drop-shadow-[0_0_100px_rgba(27,58,117,0.5)]'>
                     <img src={fullLogo} alt="iphone mockup" width={400}/>
                     <p className='font-bold text-[26px] md:text-[34px] text-center'>
-                        <Countdown date={Date.UTC(2024, 4, 5, 15, 55, 0, 0)} >
+                        {/* <Countdown date={Date.UTC(2024, 4, 5, 15, 55, 0, 0)} >
                             <div className="flex flex-col items-center justify-center">
                                 <span className="text-[22px]">Frissítsd az oldalt! 👀</span>
                             </div>
-                        </Countdown>
+                        </Countdown> */}
+                        Elérkezett a reFilc v5!
                     </p>
                     <Link to={''} onClick={scrollToDownload} className='rounded-full'>
                         <div className='flex flex-row items-center justify-center py-3 px-10 bg-gradient-to-r from-[#3C7BF5] to-[#3C5AF5] rounded-full'>
