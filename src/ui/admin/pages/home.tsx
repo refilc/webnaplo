@@ -5,6 +5,8 @@ const AdminHome = () => {
     const [installCount, setInstallCount] = useState('');
     const [iosInstallCount, setIosInstallCount] = useState('');
     const [androidInstallCount, setAndroidInstallCount] = useState('');
+    const [verFourInstallCount, setVerFourInstallCount] = useState('');
+    const [verFiveInstallCount, setVerFiveInstallCount] = useState('');
 
     const [qrScanCount, setQrScanCount] = useState('');
 
@@ -29,6 +31,8 @@ const AdminHome = () => {
         const installs = installResJson['install_count']['total'];
         const iosInstalls = installResJson['install_count']['ios'];
         const androidInstalls = installResJson['install_count']['android'];
+        const verFourInstalls = installResJson['install_count']['by_version']['older'];
+        const verFiveInstalls = installResJson['install_count']['by_version']['latest'];
 
         const scanCount = qrResJson['scan_count'];
 
@@ -36,6 +40,8 @@ const AdminHome = () => {
         setInstallCount(installs);
         setIosInstallCount(iosInstalls);
         setAndroidInstallCount(androidInstalls);
+        setVerFourInstallCount(verFourInstalls);
+        setVerFiveInstallCount(verFiveInstalls);
         
         setQrScanCount(scanCount);
 
@@ -54,6 +60,9 @@ const AdminHome = () => {
                     <p className="mb-2">- Összes: <b>{installCount}</b></p>
                     <p>- iOS: <b>{iosInstallCount}</b></p>
                     <p>- Android: <b>{androidInstallCount}</b></p>
+                    <br />
+                    <p>- Verzió szerinti (4.x.x): <b>{verFourInstallCount}</b></p>
+                    <p>- Verzió szerinti (5.x.x): <b>{verFiveInstallCount}</b></p>
                 </div>
             </div>
             <div className="flex flex-col items-start justify-start p-10">
