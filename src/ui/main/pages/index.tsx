@@ -57,7 +57,7 @@ const MainIndex = ({ scrollToDownload, downloadRef }: { scrollToDownload: any, d
                                 <span className="text-[22px]">Frissítsd az oldalt! 👀</span>
                             </div>
                         </Countdown> */}
-                        Elérkezett a reFilc v5!
+                        Egy alternatív e-KRÉTA app.
                     </p>
                     <Link to={''} onClick={scrollToDownload} className='rounded-full'>
                         <div className='flex flex-row items-center justify-center py-3 px-10 bg-gradient-to-r from-[#3C7BF5] to-[#3C5AF5] rounded-full'>
