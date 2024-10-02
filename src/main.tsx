@@ -12,6 +12,7 @@ import { UserDB } from './utils/db/user.ts';
 import { LoginUser } from './models/user.ts';
 import { Settings } from './utils/settings.ts';
 import NewMainLayout from './ui/main_new/layout.tsx';
+import PaymentLayout from './ui/payment/layout.tsx';
 // import { AdminUser } from './models/adminuser.ts';
 // import { AdminUserDB } from './utils/db/adminuser.ts';
 // import AppLayout from './app/layout.tsx';
@@ -120,25 +121,30 @@ const router = createBrowserRouter([
         },
     },
     {
-            path: '/admin/:page',
-            element: <AdminLayout />,
-            loader: async ({ params }) => {
-                const userID = await adminAuthedUser();
-                if (userID != null && params.page == 'logout') {
-                    // AdminUserDB.deleteUser(userID);
-                    window.localStorage.clear();
-                } else if (userID != null && params.page != 'home') {
-                    return redirect('/admin/home');
-                }
-                if (params.page == 'logout') {
-                    return redirect('/');
-                }
-                if (userID == null && params.page != 'login') {
-                    return redirect('/admin/login');
-                }
-                return null;
-            },
+        path: '/admin/:page',
+        element: <AdminLayout />,
+        loader: async ({ params }) => {
+            const userID = await adminAuthedUser();
+            if (userID != null && params.page == 'logout') {
+                // AdminUserDB.deleteUser(userID);
+                window.localStorage.clear();
+            } else if (userID != null && params.page != 'home') {
+                return redirect('/admin/home');
+            }
+            if (params.page == 'logout') {
+                return redirect('/');
+            }
+            if (userID == null && params.page != 'login') {
+                return redirect('/admin/login');
+            }
+            return null;
         },
+    },
+    // payment links
+    {
+        path: '/payment/paypal/mobile-checkout',
+        element: <PaymentLayout currentPage='pp-mobile-checkout' />,
+    },
     // go quick links
     {
         path: '/go/:link',
