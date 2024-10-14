@@ -80,12 +80,13 @@ const AdminCoupons = () => {
                 <form className="ml-2 text-[18px]" method="post" action="https://api.refilc.hu/v4/payment/coupon/create" target="_blank">
                     {/* <p className="mb-2">- Összes: <b>{qrScanCount}</b></p>
                     <p>- ID alapján: <b><input type="text" name="qr_code_id" id="qr_code_id" placeholder="(rf01)" className="outline-none bg-transparent" /></b></p> */}
-                    <input type="hidden" name="token" value={authToken} />
+                    <input type="hidden" name="access_token" value={authToken} />
                     <p>- Termék: <b><input type="text" name="product" id="product" placeholder="(refilcplus_basic/refilcplus_gold)" className="outline-none bg-transparent" /></b></p>
                     <p>- Mennyiség: <b><input type="text" name="count" id="count" placeholder="(opcionális, 1/2/3/...)" className="outline-none bg-transparent" /></b></p>
                     <p>- Kód: <b><input type="text" name="coupon_code" id="coupon_code" placeholder="(opcionális, STRING)" className="outline-none bg-transparent" /></b></p>
                     <p>- Lejárat: <b><input type="text" name="expire_date" id="expire_date" placeholder="(opcionális, RFC3339)" className="outline-none bg-transparent" /></b></p>
                     {/* <p>- Android: <b>{androidInstallCount}</b></p> */}
+                    <button type="submit" className="bg-white rounded-lg text-black px-10 py-2 mt-[20px]">Létrehozás</button>
                 </form>
             </div>
         </div>

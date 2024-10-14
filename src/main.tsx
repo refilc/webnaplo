@@ -128,7 +128,7 @@ const router = createBrowserRouter([
             if (userID != null && params.page == 'logout') {
                 // AdminUserDB.deleteUser(userID);
                 window.localStorage.clear();
-            } else if (userID != null && params.page != 'home') {
+            } else if (userID != null && (params.page != 'home' && params.page != 'coupons')) {
                 return redirect('/admin/home');
             }
             if (params.page == 'logout') {
