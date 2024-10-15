@@ -199,6 +199,14 @@ const router = createBrowserRouter([
             }
         },
     },
+    // random shit
+    {
+        path: '/skelly',
+        loader: () => {
+            return redirect('https://refilc.hu/image/gif/skelly.gif');
+        }
+    },
+    // 404 page
     {
         path: '*',
         element: <ErrorLayout />,
