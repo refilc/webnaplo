@@ -202,9 +202,9 @@ const router = createBrowserRouter([
     // random shit
     {
         path: '/skelly',
-        loader: () => {
-            return redirect('https://refilc.hu/image/gif/skelly.gif');
-        }
+        element: <div className='flex flex-col items-center justify-center w-full h-screen bg-black'>
+            <img src='/image/community/skelly.png' alt='skelly' title='skelly' />
+        </div>,
     },
     // 404 page
     {
