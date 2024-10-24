@@ -12,7 +12,7 @@ const AdminCoupons = () => {
     {
       id: 'refilcplus_basic',
       name: 'reFilc App Subscriptions',
-      image: '/path-to-image/refilcplus-image.jpg' // path to the product image
+      image: '/images/image.png' // path to the product image
     }
   ];
 
@@ -22,7 +22,7 @@ const AdminCoupons = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer"
+            className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer w-[300px]"
             onClick={handleProductClick}
           >
             <img
