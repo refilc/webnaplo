@@ -2,6 +2,8 @@ import { useRef } from "react";
 import NavBar from "./components/navbar";
 import MainIndex from "./pages";
 import PrivacyPolicy from "./pages/privacy";
+import PrivacyPolicyEnglish from "./pages/privacy-english";
+
 // import CountdownModal from "./components/countdown";
 
 const MainLayout = ({ currentPage }: { currentPage: string }) => {
@@ -29,6 +31,7 @@ const MainLayout = ({ currentPage }: { currentPage: string }) => {
             {
                 currentPage == 'home' ? <MainIndex scrollToDownload={scrollToDownload} downloadRef={downloadRef} /> : 
                 currentPage == 'privacy' ? <PrivacyPolicy /> :
+                currentPage == 'privacyenglish' ? <PrivacyPolicyEnglish /> :
                 ''
             }
         </div>

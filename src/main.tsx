@@ -58,6 +58,10 @@ const router = createBrowserRouter([
         element: <MainLayout currentPage='privacy'/>,
     },
     {
+        path: '/privacy-policy-english',
+        element: <MainLayout currentPage='privacyenglish'/>,
+    },
+    {
         path: '/login',
         loader: () => {
             return redirect('/auth/login');
