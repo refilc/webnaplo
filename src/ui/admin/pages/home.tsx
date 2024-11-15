@@ -12,6 +12,9 @@ const AdminHome = () => {
 
     const [authToken, setAuthToken] = useState('');
 
+    const [customerEmail, setCustomerEmail] = useState('');
+    const [reFilcPlusID, setReFilcPlusID] = useState('');
+
     const loadData = async () => {
         console.log('Loading data from reFilc API..');
 
@@ -48,6 +51,35 @@ const AdminHome = () => {
         setAuthToken(accessToken);
     }
 
+    const reFilcPlusIDByEmail = async (email: string) => {
+        console.log('Getting reFilc+ ID by customer e-mail..');
+
+        setReFilcPlusID('ID lekérése..');
+
+        const accessToken = window.localStorage.getItem('admin_token') ?? '';
+
+        // fetch things
+        try {
+            const resJson = (await (await fetch(`https://api.refilc.hu/v4/admin/subscription/by-email?email=${email}&token=${accessToken}`, {
+                method: 'GET',
+            })).json());
+
+            // set things
+            const id = resJson['data']['subscription']['session_id'] ?? 'Az azonosító nem található!';
+
+            // set variables
+            setReFilcPlusID(id);
+        } catch (e) {
+            console.error('Error while fetching reFilc+ ID by e-mail:', e);
+            setReFilcPlusID('Az azonosító nem található!');
+        }
+    }
+
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text);
+        alert('Sikeresen másolva a vágólapra!');
+    }
+
     useEffect(() => {
         loadData();
     }, []);
@@ -73,6 +105,15 @@ const AdminHome = () => {
                     <input type="hidden" name="token" value={authToken} />
                     {/* <p>- Android: <b>{androidInstallCount}</b></p> */}
                 </form>
+            </div>
+            <div className="flex flex-col items-start justify-start p-10">
+                <h1 className="text-[30px] mb-2">reFilc+ ID e-mail alapján</h1>
+                <div className="ml-2 text-[18px]">
+                    <p>- E-mail cím: <b><input type="email" name="email" id="email" placeholder="(social@refilc.hu)" className="outline-none bg-transparent" onChange={(e) => setCustomerEmail(e.target.value)} /></b></p>
+                    <p className="mb-2">- reFilc+ ID: <b className="select-text" onClick={() => copyToClipboard(reFilcPlusID)}>{reFilcPlusID}</b></p>
+                    <button onClick={() => reFilcPlusIDByEmail(customerEmail)} className="bg-v5_btn px-4 py-2 rounded-xl">Lekérés</button>
+                    {/* <p>- Android: <b>{androidInstallCount}</b></p> */}
+                </div>
             </div>
             {/* <h1 className="text-white">reFilc össz telepítések száma: {installCount}</h1> */}
         </div>
