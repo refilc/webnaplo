@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "hu.refilc.naplo",
       "sha256_cert_fingerprints": [
-        "AA:05:20:54:8B:E9:D5:EC:85:96:D8:3A:16:8A:3C:81:06:E3:34:E2:1B:F6:37:23:44:7B:1A:E2:16:CF:00:6F"
+        "AA:05:20:54:8B:E9:D5:EC:85:96:D8:3A:16:8A:3C:81:06:E3:34:E2:1B:F6:37:23:44:7B:1A:E2:16:CF:00:6F",
+        "0F:6A:7B:B6:52:1C:75:2F:EE:72:5C:2E:1B:69:FE:74:31:36:87:C5:A0:99:44:C6:D3:4F:90:8E:84:FF:52:3F"
       ]
     }
   }
