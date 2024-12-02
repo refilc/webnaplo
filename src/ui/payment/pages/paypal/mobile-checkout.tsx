@@ -1,14 +1,22 @@
-import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from '@paypal/react-paypal-js';
-import { redirect } from 'react-router-dom';
+import { PayPalButtons, PayPalButtonsComponentProps, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const PaymentPaypalMobileCheckout = () => {
-    const initialOptions: ReactPayPalScriptOptions = {
-        clientId: "Aekpi-WNRxB3iBDO2ypQhNdCAKaAuvRyt_3Sdu7jSVEGQv56iQ0sP7-KI5Inw4NU3QQ41hkAA8W-Iw9o",
-        locale: 'hu_HU',
-        currency: 'EUR',
-        vault: true,
-        intent: "subscription",
-    };
+    const [{ isPending }] = usePayPalScriptReducer();
+
+    const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+    const deviceId = searchParams.get("device_id") ?? '';
+
+    if (deviceId.replace(/\s/g, '') == '') {
+        // navigate('/payment');
+        alert('device id is empty');
+        window.location.replace('https://refilc.hu');
+        return;
+        // navigate('/');
+    }
+    
     const styles: PayPalButtonsComponentProps["style"] = {
         shape: "pill",
         layout: "vertical",
@@ -17,7 +25,7 @@ const PaymentPaypalMobileCheckout = () => {
 
     const createSubscription: PayPalButtonsComponentProps["createSubscription"] = (_, actions) => {
         return actions.subscription.create({
-            "plan_id": "PLAN_ID"
+            "plan_id": "P-37G01834G2391794DM5HCEJI"
         });
     };
     const onApprove: PayPalButtonsComponentProps["onApprove"] = async (data) => {
@@ -25,19 +33,23 @@ const PaymentPaypalMobileCheckout = () => {
             method: "POST",
             body: JSON.stringify({
                 order_id: data.orderID,
-                device_id: "DEVICE_ID",
+                device_id: deviceId,
             }),
         });
 
         const details = (await response.json())['data'];
 
-        redirect(`https://api.refilc.hu/v4/payment/paypal-finish?product=${details['product']}&reference_id=${details['reference_id']}`);
+        navigate(`https://api.refilc.hu/v4/payment/paypal-finish?product=${details['product']}&reference_id=${details['reference_id']}`);
     };
 
     return (
-        <PayPalScriptProvider options={initialOptions}>
-            <PayPalButtons style={styles} createSubscription={createSubscription} onApprove={onApprove} />
-        </PayPalScriptProvider>
+        <div className='bg-white w-screen h-screen flex flex-col items-center justify-center'>
+            <div className='bg-white'>
+                {isPending ? <p className='text-black'>Betöltés...</p> : (
+                    <PayPalButtons className='' style={styles} createSubscription={createSubscription} onApprove={onApprove} />
+                )}
+            </div>
+        </div>
     );
 }
 
