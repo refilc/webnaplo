@@ -171,7 +171,7 @@ const router = createBrowserRouter([
                 case 'tiktok':
                     return redirect('https://www.tiktok.com/@refilc.hu');
                 case 'discord':
-                    return redirect('https://discord.com/invite/7d6cn3Yypz');
+                    return redirect('https://discord.com/invite/wRhZjwN3jC');
                 case 'instagram':
                     return redirect('https://www.instagram.com/refilcapp/');
                 case 'github':
@@ -191,7 +191,7 @@ const router = createBrowserRouter([
                 case 'tiktok':
                     return redirect('https://www.tiktok.com/@refilc.hu');
                 case 'discord':
-                    return redirect('https://discord.com/invite/7d6cn3Yypz');
+                    return redirect('https://discord.com/invite/wRhZjwN3jC');
                 case 'instagram':
                     return redirect('https://www.instagram.com/refilcapp/');
                 case 'github':
